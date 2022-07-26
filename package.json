@@ -1,0 +1,64 @@
+{
+    "name": "@tobytwigger/laravel-job-status-vue",
+    "version": "0.0.1",
+    "description": "A Vue integration for the Laravel Job Status package",
+    "main": "dist/index.js",
+    "keywords": [
+        "tracker",
+        "open-source",
+        "php",
+        "job",
+        "queue",
+        "vuejs",
+        "laravel",
+        "database",
+        "vue"
+    ],
+    "scripts": {
+        "test": "jest --config jestconfig.json",
+        "build": "tsc",
+        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+        "lint": "tslint -p tsconfig.json",
+        "prepare": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-vue.git"
+    },
+    "author": "Toby Twigger <tobytwigger1@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-vue/issues"
+    },
+    "homepage": "https://github.com/ElbowSpaceUK/laravel-job-status-vue#readme",
+    "files": [
+        "dist/**/*"
+    ],
+    "devDependencies": {
+        "@babel/types": "^7.17.0",
+        "@jest/types": "^27.5.1",
+        "@types/jest": "^27.4.0",
+        "@vue/test-utils": "^1.3.0",
+        "axios": "^0.26",
+        "jest": "^27.5.1",
+        "jest-mock-axios": "^4.5.0",
+        "prettier": "^2.5.1",
+        "rollup": "^2.67.1",
+        "rollup-plugin-clear": "^2.0.7",
+        "rollup-plugin-typescript2": "^0.31.2",
+        "rollup-plugin-vue": "^6.0.0",
+        "ts-jest": "^27.1.3",
+        "ts-node": "^10.5.0",
+        "tslint": "^6.1.3",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^4.5.5",
+        "vue": "^2.6.14"
+    },
+    "peerDependencies": {
+        "axios": "*",
+        "vue": "^2.0"
+    },
+    "dependencies": {
+        "vue": "^2.0"
+    }
+}
