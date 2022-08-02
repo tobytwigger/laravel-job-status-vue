@@ -1,17 +1,19 @@
-import Vue from 'vue';
-import { SettingType } from '../core/settings';
-import { Settings } from './core';
 import { Axios } from 'axios';
+import Vue from 'vue';
+
+declare module "*.vue" {
+    import Vue from 'vue';
+    export default Vue;
+}
 
 declare module 'vue/types/vue' {
     interface Vue {
-        $settings: Settings;
-        $testtwo: string;
+        $jobStatusGlobalSettings: VueOptions;
     }
 }
 
 interface VueOptions {
-    type?: SettingType;
+    url: string;
     axios: Axios;
 }
 
