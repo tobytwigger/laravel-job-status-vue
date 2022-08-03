@@ -8,7 +8,15 @@ declare const _default: import("vue/types/v3-define-component").DefineComponent<
         required: false;
         default: () => {};
     };
-}, import("vue").Data, ComponentData, {}, {
+}, import("vue").Data, ComponentData, {
+    defaultSlotProperties(): {
+        status: string;
+        lastMessage: string;
+        complete: boolean;
+        cancel: () => void;
+        signal: (signal: string) => void;
+    } | undefined;
+}, {
     cancel(): void;
     signal(signal: string): void;
     loadJobStatus(): void;
