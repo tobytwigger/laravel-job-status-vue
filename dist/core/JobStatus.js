@@ -1,4 +1,5 @@
 "use strict";
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = require("vue");
 exports.default = (0, vue_1.defineComponent)({
@@ -38,12 +39,27 @@ exports.default = (0, vue_1.defineComponent)({
     },
     methods: {
         cancel: function () {
-            if (this.status !== null) {
-                this.status.status = 'Cancelled';
-            }
+            return this.signal('cancel', true);
         },
-        signal: function (signal) {
-            console.log('Signalled ' + signal);
+        signal: function (signal, cancelJob, parameters) {
+            if (parameters === void 0) { parameters = {}; }
+            return new Promise(function (resolve, reject) {
+                if (_this.status !== null) {
+                    var url = _this.$jobStatusGlobalSettings.url
+                        + (_this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
+                        + 'job-status/'
+                        + _this.status.id
+                        + '/job-signal';
+                    resolve(_this.$jobStatusGlobalSettings.axios.post(url, {
+                        signal: signal,
+                        cancel_job: cancelJob,
+                        parameters: parameters
+                    }));
+                }
+                else {
+                    reject('Status is not set');
+                }
+            });
         },
         loadJobStatus: function () {
             var _this = this;
@@ -67,7 +83,6 @@ exports.default = (0, vue_1.defineComponent)({
             })
                 .catch(function (error) {
                 var _a;
-                console.log(error);
                 _this.error = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data.message;
             })
                 .finally(function () { return _this.loading = false; });
@@ -82,7 +97,7 @@ exports.default = (0, vue_1.defineComponent)({
                     lastMessage: this.status.lastMessage,
                     complete: this.status.isFinished,
                     cancel: function () { return _this.cancel(); },
-                    signal: function (signal) { return _this.signal(signal); }
+                    signal: function (signal, cancelJob, parameters) { return _this.signal(signal, cancelJob, parameters); }
                 };
             }
         }

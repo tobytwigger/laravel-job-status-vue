@@ -1,5 +1,6 @@
 import { defineComponent, h } from 'vue'
-import {AxiosError, AxiosResponse} from "axios";
+import {AxiosError, AxiosPromise, AxiosResponse} from "axios";
+import {AssociativeObject, ComponentData, DefaultProps} from "../types/core";
 
 export default defineComponent({
     render() {
@@ -42,12 +43,25 @@ export default defineComponent({
     },
     methods: {
         cancel() {
-            if(this.status !== null) {
-                this.status.status = 'Cancelled';
-            }
+            return this.signal('cancel', true);
         },
-        signal(signal: string) {
-            console.log('Signalled ' + signal);
+        signal(signal: string, cancelJob: boolean, parameters: AssociativeObject = {}) {
+            const promise = (resolve: any, reject: any) => {
+                if (this.status !== null) {
+                    const url = this.$jobStatusGlobalSettings.url
+                        + (this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
+                        + 'job-status/'
+                        + this.status.id
+                        + '/job-signal';
+
+                    resolve(this.$jobStatusGlobalSettings.axios.post(url, {
+                        signal, cancel_job: cancelJob, parameters
+                    }));
+                } else {
+                    reject('Status is not set');
+                }
+            }
+            return new Promise(promise);
 
         },
         loadJobStatus() {
@@ -78,16 +92,17 @@ export default defineComponent({
         }
     },
     computed: {
-        defaultSlotProperties() {
+        defaultSlotProperties(): DefaultProps|null {
             if(this.status !== null) {
                 return {
                     status: this.status.status,
                     lastMessage: this.status.lastMessage,
                     complete: this.status.isFinished,
                     cancel: () => this.cancel(),
-                    signal: (signal: string) => this.signal(signal)
+                    signal: (signal: string, cancelJob: boolean, parameters: AssociativeObject) => this.signal(signal, cancelJob, parameters)
                 }
             }
+            return null;
         }
     }
 })

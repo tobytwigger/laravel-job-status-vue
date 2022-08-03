@@ -1,3 +1,4 @@
+import { AssociativeObject, ComponentData, DefaultProps } from "../types/core";
 declare const _default: import("vue/types/v3-define-component").DefineComponent<{
     jobAlias: {
         type: StringConstructor;
@@ -9,16 +10,10 @@ declare const _default: import("vue/types/v3-define-component").DefineComponent<
         default: () => {};
     };
 }, import("vue").Data, ComponentData, {
-    defaultSlotProperties(): {
-        status: string;
-        lastMessage: string;
-        complete: boolean;
-        cancel: () => void;
-        signal: (signal: string) => void;
-    } | undefined;
+    defaultSlotProperties(): DefaultProps;
 }, {
-    cancel(): void;
-    signal(signal: string): void;
+    cancel(): Promise<unknown>;
+    signal: (signal: string, cancelJob: boolean, parameters?: AssociativeObject) => Promise<unknown>;
     loadJobStatus(): void;
 }, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
     jobAlias: {
