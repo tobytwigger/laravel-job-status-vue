@@ -26,6 +26,7 @@ var JobStatusNotifier = (function () {
         return this;
     };
     JobStatusNotifier.prototype.triggerUpdate = function (jobStatus) {
+        console.log('updated', jobStatus);
         this.updateCallbacks.forEach(function (callback) { return callback(jobStatus); });
     };
     JobStatusNotifier.prototype.triggerLoading = function () {

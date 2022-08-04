@@ -28,7 +28,6 @@ var Repository = (function () {
                 parameters: parameters,
                 cancel_job: cancelJob
             };
-            console.log(data);
             _this.axios.post(url, data)
                 .finally(function () { return resolve(null); });
         });
@@ -45,11 +44,13 @@ var Repository = (function () {
         return new Promise(function (resolve, reject) {
             _this.axios.get(url)
                 .then(function (response) {
-                resolve(response.data.length > 0
-                    ? response.data[0]
-                    : null);
+                resolve(response.data);
             })
                 .catch(function (error) {
+                var _a;
+                if (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404) {
+                    resolve(null);
+                }
                 reject(error);
             });
         });

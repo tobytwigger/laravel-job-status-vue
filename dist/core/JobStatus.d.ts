@@ -18,7 +18,7 @@ declare const _default: import("vue/types/v3-define-component").DefineComponent<
     defaultSlotProperties(): DefaultProps | null;
 }, {
     cancel(): Promise<null> | null;
-    signal(signal: string, cancelJob: boolean, parameters?: AssociativeObject): Promise<null> | null;
+    signal(signal: string, cancelJob?: boolean, parameters?: AssociativeObject): Promise<null> | null;
 }, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
     jobAlias: {
         type: StringConstructor;

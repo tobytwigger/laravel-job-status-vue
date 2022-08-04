@@ -66,7 +66,7 @@ export default defineComponent({
         cancel() {
             return this.signal('cancel', true);
         },
-        signal(signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null>|null {
+        signal(signal: string, cancelJob: boolean = false, parameters: AssociativeObject = {}): Promise<null>|null {
             if(this.status === null) {
                 return null;
             }

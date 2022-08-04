@@ -41,6 +41,7 @@ class JobStatusNotifier {
     }
 
     triggerUpdate(jobStatus: JobStatus|null) {
+        console.log('updated', jobStatus);
         this.updateCallbacks.forEach((callback: (jobStatus: JobStatus|null) => void) => callback(jobStatus));
     }
 

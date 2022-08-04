@@ -59,6 +59,7 @@ exports.default = (0, vue_1.defineComponent)({
             return this.signal('cancel', true);
         },
         signal: function (signal, cancelJob, parameters) {
+            if (cancelJob === void 0) { cancelJob = false; }
             if (parameters === void 0) { parameters = {}; }
             if (this.status === null) {
                 return null;

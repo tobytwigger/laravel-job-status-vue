@@ -41,8 +41,6 @@ class Repository {
                 cancel_job: cancelJob
             };
 
-            console.log(data);
-
             this.axios.post(url, data)
                 .finally(() => resolve(null));
         });
@@ -60,11 +58,12 @@ class Repository {
         return new Promise<JobStatus | null>((resolve, reject) => {
             this.axios.get(url)
                 .then((response: AxiosResponse) => {
-                    resolve(response.data.length > 0
-                        ? response.data[0]
-                        : null);
+                    resolve(response.data);
                 })
                 .catch((error: AxiosError) => {
+                    if(error.response?.status === 404) {
+                        resolve(null);
+                    }
                     reject(error);
                 });
         });
