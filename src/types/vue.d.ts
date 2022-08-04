@@ -6,12 +6,6 @@ declare module "*.vue" {
     export default Vue;
 }
 
-declare module 'vue/types/vue' {
-    interface Vue {
-        $jobStatusGlobalSettings: VueOptions;
-    }
-}
-
 interface VueOptions {
     url: string;
     axios: Axios;

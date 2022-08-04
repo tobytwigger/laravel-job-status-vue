@@ -1,10 +1,11 @@
 "use strict";
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = require("vue");
+var JobStatusObserver_1 = require("./JobStatusObserver");
+var repository_1 = require("./repository");
 exports.default = (0, vue_1.defineComponent)({
     render: function () {
-        if (this.loading) {
+        if (this.loading && this.status === null) {
             return (0, vue_1.h)('div', this.$scopedSlots.loading());
         }
         if (this.error) {
@@ -25,9 +26,25 @@ exports.default = (0, vue_1.defineComponent)({
             required: false,
             default: function () { return {}; }
         },
+        polling: {
+            type: Boolean,
+            required: false,
+            default: true
+        }
     },
     mounted: function () {
-        this.loadJobStatus();
+        var _this = this;
+        if (this.polling) {
+            JobStatusObserver_1.default.getInstance().poll(this.jobAlias, this.tags, 5000)
+                .onUpdated(function (jobStatus) {
+                _this.status = jobStatus;
+                _this.error = null;
+            })
+                .onError(function (error) { var _a; return _this.error = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data.message; })
+                .onLoading(function () { return _this.loading = true; })
+                .onFinishedLoading(function () { return _this.loading = false; });
+            JobStatusObserver_1.default.getInstance().update(this.jobAlias, this.tags);
+        }
     },
     data: function () {
         return {
@@ -43,50 +60,11 @@ exports.default = (0, vue_1.defineComponent)({
         },
         signal: function (signal, cancelJob, parameters) {
             if (parameters === void 0) { parameters = {}; }
-            return new Promise(function (resolve, reject) {
-                if (_this.status !== null) {
-                    var url = _this.$jobStatusGlobalSettings.url
-                        + (_this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
-                        + 'job-status/'
-                        + _this.status.id
-                        + '/job-signal';
-                    resolve(_this.$jobStatusGlobalSettings.axios.post(url, {
-                        signal: signal,
-                        cancel_job: cancelJob,
-                        parameters: parameters
-                    }));
-                }
-                else {
-                    reject('Status is not set');
-                }
-            });
+            if (this.status === null) {
+                return null;
+            }
+            return repository_1.default.getInstance().sendSignal(this.status, signal, cancelJob, parameters);
         },
-        loadJobStatus: function () {
-            var _this = this;
-            var urlParams = new URLSearchParams();
-            urlParams.set('alias', this.jobAlias);
-            Object.keys(this.tags).forEach(function (key) { return urlParams.set('tags[' + key + ']', _this.tags[key]); });
-            var url = this.$jobStatusGlobalSettings.url
-                + (this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
-                + 'job-status?'
-                + urlParams.toString();
-            this.loading = true;
-            this.$jobStatusGlobalSettings.axios.get(url)
-                .then(function (response) {
-                _this.error = null;
-                if (response.data.length > 0) {
-                    _this.status = response.data[0];
-                }
-                else {
-                    _this.status = null;
-                }
-            })
-                .catch(function (error) {
-                var _a;
-                _this.error = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data.message;
-            })
-                .finally(function () { return _this.loading = false; });
-        }
     },
     computed: {
         defaultSlotProperties: function () {
@@ -100,6 +78,7 @@ exports.default = (0, vue_1.defineComponent)({
                     signal: function (signal, cancelJob, parameters) { return _this.signal(signal, cancelJob, parameters); }
                 };
             }
+            return null;
         }
     }
 });

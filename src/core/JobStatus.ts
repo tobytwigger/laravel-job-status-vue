@@ -1,10 +1,12 @@
 import { defineComponent, h } from 'vue'
 import {AxiosError, AxiosPromise, AxiosResponse} from "axios";
 import {AssociativeObject, ComponentData, DefaultProps} from "../types/core";
+import JobStatusObserver from "./JobStatusObserver";
+import repository from "./repository";
 
 export default defineComponent({
     render() {
-        if(this.loading) {
+        if(this.loading && this.status === null) {
             // @ts-ignore
             return h('div', this.$scopedSlots.loading());
         }
@@ -29,9 +31,28 @@ export default defineComponent({
             required: false,
             default: () => { return {}; }
         },
+        polling: {
+            type: Boolean,
+            required: false,
+            default: true
+        }
     },
     mounted() {
-        this.loadJobStatus();
+        if(this.polling) {
+            JobStatusObserver.getInstance().poll(
+                this.jobAlias,
+                this.tags,
+                5000
+            )
+                .onUpdated((jobStatus) => {
+                    this.status = jobStatus;
+                    this.error = null;
+                })
+                .onError((error) => this.error = error.response?.data.message)
+                .onLoading(() => this.loading = true)
+                .onFinishedLoading(() => this.loading = false);
+            JobStatusObserver.getInstance().update(this.jobAlias, this.tags);
+        }
     },
     data(): ComponentData {
         return {
@@ -45,51 +66,17 @@ export default defineComponent({
         cancel() {
             return this.signal('cancel', true);
         },
-        signal(signal: string, cancelJob: boolean, parameters: AssociativeObject = {}) {
-            const promise = (resolve: any, reject: any) => {
-                if (this.status !== null) {
-                    const url = this.$jobStatusGlobalSettings.url
-                        + (this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
-                        + 'job-status/'
-                        + this.status.id
-                        + '/job-signal';
-
-                    resolve(this.$jobStatusGlobalSettings.axios.post(url, {
-                        signal, cancel_job: cancelJob, parameters
-                    }));
-                } else {
-                    reject('Status is not set');
-                }
+        signal(signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null>|null {
+            if(this.status === null) {
+                return null;
             }
-            return new Promise(promise);
-
+            return repository.getInstance().sendSignal(
+                this.status,
+                signal,
+                cancelJob,
+                parameters
+            );
         },
-        loadJobStatus() {
-            const urlParams = new URLSearchParams();
-            urlParams.set('alias', this.jobAlias);
-            Object.keys(this.tags).forEach(key => urlParams.set('tags[' + key + ']', this.tags[key]));
-
-            const url = this.$jobStatusGlobalSettings.url
-            + (this.$jobStatusGlobalSettings.url.endsWith('/') ? '' : '/')
-                + 'job-status?'
-                + urlParams.toString()
-
-            this.loading = true;
-            // Add ?alias= and ?tags=
-            this.$jobStatusGlobalSettings.axios.get(url)
-                .then((response: AxiosResponse) => {
-                    this.error = null;
-                    if(response.data.length > 0) {
-                        this.status = response.data[0];
-                    } else {
-                        this.status = null;
-                    }
-                })
-                .catch((error: AxiosError) => {
-                    this.error = error.response?.data.message;
-                })
-                .finally(() => this.loading = false);
-        }
     },
     computed: {
         defaultSlotProperties(): DefaultProps|null {

@@ -3,7 +3,7 @@ import {AxiosResponse} from "axios";
 interface ComponentData {
     status: JobStatus|null;
     loading: boolean;
-    statusId: bigint|null;
+    statusId: number|null;
     error: string|null;
 }
 
@@ -11,13 +11,13 @@ interface DefaultProps {
     status: string;
     lastMessage: string;
     complete: boolean;
-    cancel(): Promise<AxiosResponse>,
-    signal(signal: string): Promise<AxiosResponse>
+    cancel(): Promise<null>|null,
+    signal(signal: string, cancelJob: boolean, parameters: AssociativeObject): Promise<null>|null
 }
 
 interface JobStatus {
     created_at: string
-    id: bigint
+    id: number
     isFinished: boolean
     job_alias: string
     job_class: string
@@ -25,7 +25,7 @@ interface JobStatus {
     status: string
     updated_at: string
     percentage: number
-    run_count: bigint
+    run_count: number
 }
 
 interface AssociativeObject {
