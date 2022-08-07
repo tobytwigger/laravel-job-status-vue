@@ -1,10 +1,12 @@
 import {AxiosResponse} from "axios";
+import JobStatusObserver from "../core/JobStatusObserver";
 
 interface ComponentData {
     status: JobStatus|null;
     loading: boolean;
     statusId: number|null;
     error: string|null;
+    jobStatusObserver: JobStatusObserver;
 }
 
 interface DefaultProps {

@@ -39,7 +39,7 @@ export default defineComponent({
     },
     mounted() {
         if(this.polling) {
-            JobStatusObserver.getInstance().poll(
+            this.jobStatusObserver.poll(
                 this.jobAlias,
                 this.tags,
                 5000
@@ -51,15 +51,20 @@ export default defineComponent({
                 .onError((error) => this.error = error.response?.data.message)
                 .onLoading(() => this.loading = true)
                 .onFinishedLoading(() => this.loading = false);
-            JobStatusObserver.getInstance().update(this.jobAlias, this.tags);
+            this.jobStatusObserver.update(this.jobAlias, this.tags);
         }
+    },
+    destroyed() {
+        console.log('destroyed');
+        this.jobStatusObserver.cleanup(this.jobAlias, this.tags);
     },
     data(): ComponentData {
         return {
             status: null,
             loading: false,
             statusId: null,
-            error: null
+            error: null,
+            jobStatusObserver: new JobStatusObserver()
         }
     },
     methods: {

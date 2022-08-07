@@ -2,20 +2,18 @@ import {AssociativeObject} from "../types/core";
 import JobStatusNotifierPool from "./JobStatusNotifierPool";
 import JobStatusNotifier from "./JobStatusNotifier";
 import repository from "./repository";
+import QueryHasher from "./QueryHasher";
 
 class JobStatusObserver {
 
-    static getInstance() {
-        return new JobStatusObserver();
-    }
+    interval: NodeJS.Timer|null = null;
 
     poll(jobAlias: string, tags: AssociativeObject, ms: number = 5000) : JobStatusNotifier {
-        // TODO stop the listening in vue destruct
-        setInterval(() => this.update(jobAlias, tags), ms);
-        return this.bindToStatus(jobAlias, tags);
+        this.addInterval(jobAlias, tags, setInterval(() => this.update(jobAlias, tags), ms));
+        return this.getNotifier(jobAlias, tags);
     }
 
-    bindToStatus(jobAlias: string, tags: AssociativeObject): JobStatusNotifier {
+    getNotifier(jobAlias: string, tags: AssociativeObject): JobStatusNotifier {
         return JobStatusNotifierPool.getInstance().get(jobAlias, tags);
     }
 
@@ -27,6 +25,16 @@ class JobStatusObserver {
             .finally(() => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerFinishedLoading());
     }
 
+    private addInterval(jobAlias: string, tags: AssociativeObject, interval: NodeJS.Timer) {
+        this.interval = interval;
+    }
+
+    cleanup(jobAlias: string, tags: AssociativeObject) {
+        if(this.interval !== null) {
+            clearInterval(this.interval);
+        }
+        this.interval = null;
+    }
 }
 
 export default JobStatusObserver

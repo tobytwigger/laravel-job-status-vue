@@ -35,7 +35,7 @@ exports.default = (0, vue_1.defineComponent)({
     mounted: function () {
         var _this = this;
         if (this.polling) {
-            JobStatusObserver_1.default.getInstance().poll(this.jobAlias, this.tags, 5000)
+            this.jobStatusObserver.poll(this.jobAlias, this.tags, 500)
                 .onUpdated(function (jobStatus) {
                 _this.status = jobStatus;
                 _this.error = null;
@@ -43,15 +43,20 @@ exports.default = (0, vue_1.defineComponent)({
                 .onError(function (error) { var _a; return _this.error = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data.message; })
                 .onLoading(function () { return _this.loading = true; })
                 .onFinishedLoading(function () { return _this.loading = false; });
-            JobStatusObserver_1.default.getInstance().update(this.jobAlias, this.tags);
+            this.jobStatusObserver.update(this.jobAlias, this.tags);
         }
+    },
+    destroyed: function () {
+        console.log('destroyed');
+        this.jobStatusObserver.cleanup(this.jobAlias, this.tags);
     },
     data: function () {
         return {
             status: null,
             loading: false,
             statusId: null,
-            error: null
+            error: null,
+            jobStatusObserver: new JobStatusObserver_1.default()
         };
     },
     methods: {
