@@ -5,9 +5,9 @@ class Repository {
 
     private static instance: Repository;
 
-    private readonly url: string;
+    readonly url: string;
 
-    private readonly axios: Axios;
+    readonly axios: Axios;
 
     public static createInstance(url: string, axios: Axios) {
         Repository.instance = new Repository(url, axios)

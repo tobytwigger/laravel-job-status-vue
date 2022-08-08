@@ -6,6 +6,9 @@ var QueryHasher = (function () {
     QueryHasher.encode = function (jobAlias, tags) {
         return encodeURIComponent(JSON.stringify({ jobAlias: jobAlias, tags: tags }));
     };
+    QueryHasher.check = function (encoded, jobAlias, tags) {
+        return encoded === this.encode(jobAlias, tags);
+    };
     return QueryHasher;
 }());
 exports.default = QueryHasher;

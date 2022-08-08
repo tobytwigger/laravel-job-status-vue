@@ -2,8 +2,8 @@ import { AssociativeObject, JobStatus } from "../types/core";
 import { Axios } from "axios";
 declare class Repository {
     private static instance;
-    private readonly url;
-    private readonly axios;
+    readonly url: string;
+    readonly axios: Axios;
     static createInstance(url: string, axios: Axios): void;
     static getInstance(): Repository;
     private constructor();

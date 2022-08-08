@@ -35,7 +35,7 @@ exports.default = (0, vue_1.defineComponent)({
     mounted: function () {
         var _this = this;
         if (this.polling) {
-            this.jobStatusObserver.poll(this.jobAlias, this.tags, 500)
+            this.jobStatusObserver.poll(this.jobAlias, this.tags, 5000)
                 .onUpdated(function (jobStatus) {
                 _this.status = jobStatus;
                 _this.error = null;
