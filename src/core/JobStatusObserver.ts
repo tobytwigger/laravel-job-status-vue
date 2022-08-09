@@ -18,7 +18,7 @@ class JobStatusObserver {
     }
 
     poll(ms: number = 5000) : JobStatusNotifier {
-        this.interval = setInterval(() => this.update(), ms);
+        this.interval = setInterval(async () => await this.update(), ms);
         return JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags);
     }
 
