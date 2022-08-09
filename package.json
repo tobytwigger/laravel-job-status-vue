@@ -61,6 +61,7 @@
         "vue": "^2.0"
     },
     "dependencies": {
+        "@vue/compiler-sfc": "^3.2.37",
         "vue": "^2.0"
     }
 }
