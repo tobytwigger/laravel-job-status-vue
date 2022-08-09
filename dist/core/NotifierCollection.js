@@ -12,8 +12,8 @@ var NotifierCollection = (function () {
         }
         return null;
     };
-    NotifierCollection.prototype.push = function (jobAlias, tags, jobStatusNotifier) {
-        var key = this._getKey(jobAlias, tags);
+    NotifierCollection.prototype.push = function (jobStatusNotifier) {
+        var key = this._getKey(jobStatusNotifier.jobAlias, jobStatusNotifier.tags);
         this.notifiers[key] = jobStatusNotifier;
     };
     NotifierCollection.prototype._getKey = function (jobAlias, tags) {

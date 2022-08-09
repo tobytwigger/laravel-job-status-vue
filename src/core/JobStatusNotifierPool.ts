@@ -27,7 +27,7 @@ class JobStatusNotifierPool
         let jobStatusNotifier: JobStatusNotifier|null = this.pool.get(jobAlias, tags);
         if(jobStatusNotifier === null) {
             jobStatusNotifier = new JobStatusNotifier(jobAlias, tags);
-            this.pool.push(jobAlias, tags, jobStatusNotifier);
+            this.pool.push(jobStatusNotifier);
         }
         return jobStatusNotifier;
     }

@@ -17,8 +17,8 @@ class NotifierCollection {
         return null;
     }
 
-    push(jobAlias: string, tags: AssociativeObject, jobStatusNotifier: JobStatusNotifier): void {
-        const key: string = this._getKey(jobAlias, tags);
+    push(jobStatusNotifier: JobStatusNotifier): void {
+        const key: string = this._getKey(jobStatusNotifier.jobAlias, jobStatusNotifier.tags);
         this.notifiers[key] = jobStatusNotifier;
     }
 

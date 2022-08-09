@@ -16,7 +16,7 @@ var JobStatusNotifierPool = (function () {
         var jobStatusNotifier = this.pool.get(jobAlias, tags);
         if (jobStatusNotifier === null) {
             jobStatusNotifier = new JobStatusNotifier_1.default(jobAlias, tags);
-            this.pool.push(jobAlias, tags, jobStatusNotifier);
+            this.pool.push(jobStatusNotifier);
         }
         return jobStatusNotifier;
     };

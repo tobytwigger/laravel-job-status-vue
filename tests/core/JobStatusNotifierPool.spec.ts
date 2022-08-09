@@ -18,7 +18,7 @@ it('saves a new job notifier and returns the same one later', () => {
     expect(JobStatusNotifierPool.getInstance().get('my-alias', {key1: 'val1'}).loadingCallbacks.length).toBe(0);
     let notifier = JobStatusNotifierPool.getInstance().get('my-alias', {key1: 'val1'});
     notifier.onLoading(() => false); // Add some callback to make the notifier unique
-    
+
     // Try again
     expect(JobStatusNotifierPool.getInstance().get('my-alias', {key1: 'val1'})).toStrictEqual(notifier);
     expect(JobStatusNotifierPool.getInstance().get('my-alias', {key1: 'val1'}).loadingCallbacks.length).toBe(1);

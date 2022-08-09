@@ -6,7 +6,7 @@ interface NotifierObject {
 declare class NotifierCollection {
     notifiers: NotifierObject;
     get(jobAlias: string, tags: AssociativeObject): JobStatusNotifier | null;
-    push(jobAlias: string, tags: AssociativeObject, jobStatusNotifier: JobStatusNotifier): void;
+    push(jobStatusNotifier: JobStatusNotifier): void;
     private _getKey;
 }
 export default NotifierCollection;
