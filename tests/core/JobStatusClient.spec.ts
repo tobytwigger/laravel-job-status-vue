@@ -66,6 +66,39 @@ it('gets a job status', async () => {
     expect(mockedAxios.get).toHaveBeenCalledWith('/url/job-status?alias=my_alias&tags%5Bkey1%5D=value1');
 });
 
-test.todo('throws an error if getting a job status fails');
+test('throws an error if getting a job status fails', async () => {
+    mockedAxios.get.mockImplementation(() => {
+        throw new Error('My Message');
+    });
+    JobStatusClient.createInstance('/url', mockedAxios);
 
-test.todo('throws an error if sending a signal fails');
+    await expect(
+        JobStatusClient.getInstance().get(
+            'my_alias',
+            {key1: 'value1'}
+        )
+    ).rejects.toThrowError('My Message')
+
+    expect(mockedAxios.get).toHaveBeenCalledWith('/url/job-status?alias=my_alias&tags%5Bkey1%5D=value1');
+});
+
+test('throws an error if sending a signal fails', async () => {
+    mockedAxios.post.mockImplementation(() => {
+        throw new Error('My Message');
+    });
+    JobStatusClient.createInstance('/url', mockedAxios);
+
+    await expect(
+        JobStatusClient.getInstance().sendSignal(
+            55,
+            'cancel',
+            true,
+            {triggered_at: '23:33'}
+        )).rejects.toThrowError('My Message')
+
+    expect(mockedAxios.post).toHaveBeenCalledWith(`/url/job-status/55/job-signal`, {
+        signal: 'cancel',
+        parameters: {triggered_at: '23:33'},
+        cancel_job: true
+    });
+});
