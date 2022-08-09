@@ -1,4 +1,4 @@
-import repository from "../../../src/core/repository";
+import JobStatusRepository from "../../../src/core/JobStatusRepository";
 import axios from 'axios';
 import {JobStatus} from "../../../src/types/core";
 
@@ -6,27 +6,27 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 afterEach(() => {
-    repository.clearInstance();
+    JobStatusRepository.clearInstance();
 });
 
 it('creates a new instance with the given parameters', () => {
-    repository.createInstance('/url', axios);
+    JobStatusRepository.createInstance('/url', axios);
 
-    const repo = repository.getInstance();
+    const repo = JobStatusRepository.getInstance();
     expect(repo.url).toBe('/url');
     expect(repo.axios).toBe(axios);
 });
 
 it('throws an exception if getInstance is called before createInstance', () => {
-    expect(() => repository.getInstance()).toThrow(Error);
-    expect(() => repository.getInstance()).toThrow('Please call createInstance before getting an instance of the job status repository');
+    expect(() => JobStatusRepository.getInstance()).toThrow(Error);
+    expect(() => JobStatusRepository.getInstance()).toThrow('Please call createInstance before getting an instance of the job status repository');
 });
 
 it('sends a signal', async () => {
     mockedAxios.post.mockResolvedValue(null);
-    repository.createInstance('/url', mockedAxios);
+    JobStatusRepository.createInstance('/url', mockedAxios);
 
-    let response = await repository.getInstance().sendSignal(
+    let response = await JobStatusRepository.getInstance().sendSignal(
         55,
         'cancel',
         true,
@@ -56,8 +56,8 @@ it('gets a job status', async () => {
     };
 
     mockedAxios.get.mockResolvedValue({data: jobStatus});
-    repository.createInstance('/url', mockedAxios);
-    let response = await repository.getInstance().get(
+    JobStatusRepository.createInstance('/url', mockedAxios);
+    let response = await JobStatusRepository.getInstance().get(
         'my_alias',
         {key1: 'value1'}
     );

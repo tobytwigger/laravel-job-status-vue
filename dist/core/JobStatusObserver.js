@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var JobStatusNotifierPool_1 = require("./JobStatusNotifierPool");
-var repository_1 = require("./repository");
+var JobStatusRepository_1 = require("./JobStatusRepository");
 var JobStatusObserver = (function () {
     function JobStatusObserver() {
         this.interval = null;
@@ -17,7 +17,7 @@ var JobStatusObserver = (function () {
     };
     JobStatusObserver.prototype.update = function (jobAlias, tags) {
         JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerLoading();
-        repository_1.default.getInstance().get(jobAlias, tags)
+        JobStatusRepository_1.default.getInstance().get(jobAlias, tags)
             .then(function (jobStatus) { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerUpdate(jobStatus); })
             .catch(function (error) { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerError(error); })
             .finally(function () { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerFinishedLoading(); });

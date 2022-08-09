@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var QueryHasher_1 = require("./QueryHasher");
+var QueryHasher_1 = require("./../utils/QueryHasher");
 var NotifierCollection = (function () {
     function NotifierCollection() {
         this.notifiers = {};

@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.installer = void 0;
-var JobStatus_1 = require("./core/JobStatus");
-var repository_1 = require("./core/repository");
+var JobStatusRepository_1 = require("./core/JobStatusRepository");
+var JobStatus_1 = require("./vue2/JobStatus");
 exports.installer = {
     install: function (VueInstance, options) {
         VueInstance.component('JobStatus', JobStatus_1.default);
-        repository_1.default.createInstance(options.url, options.axios);
+        JobStatusRepository_1.default.createInstance(options.url, options.axios);
     },
 };
 exports.default = exports.installer;

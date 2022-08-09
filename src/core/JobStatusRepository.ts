@@ -1,10 +1,10 @@
 import {AssociativeObject, JobStatus} from "../types/core";
 import {Axios, AxiosError, AxiosResponse} from "axios";
-import ApiUrlGenerator from "./ApiUrlGenerator";
+import ApiUrlGenerator from "./../utils/ApiUrlGenerator";
 
-class Repository {
+class JobStatusRepository {
 
-    private static instance: Repository|null = null;
+    private static instance: JobStatusRepository|null = null;
 
     readonly _url: ApiUrlGenerator;
 
@@ -15,15 +15,15 @@ class Repository {
     }
 
     public static createInstance(url: string, axios: Axios) {
-        Repository.instance = new Repository(url, axios)
+        JobStatusRepository.instance = new JobStatusRepository(url, axios)
     }
 
-    public static getInstance(): Repository {
-        if (Repository.instance === null) {
+    public static getInstance(): JobStatusRepository {
+        if (JobStatusRepository.instance === null) {
             throw new Error('Please call createInstance before getting an instance of the job status repository');
         }
 
-        return Repository.instance;
+        return JobStatusRepository.instance;
     }
 
     private constructor(url: string, axios: Axios) {
@@ -61,8 +61,8 @@ class Repository {
     }
 
     static clearInstance() {
-        Repository.instance = null;
+        JobStatusRepository.instance = null;
     }
 }
 
-export default Repository;
+export default JobStatusRepository;

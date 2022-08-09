@@ -1,6 +1,5 @@
-import JobStatus from "./core/JobStatus";
-import Repository from "./core/repository";
-import JobStatusNotifierPool from "./core/JobStatusNotifierPool";
+import JobStatusRepository from "./core/JobStatusRepository";
+import JobStatus from "./vue2/JobStatus";
 
 type VueOptions = import('./types/vue').VueOptions;
 
@@ -11,7 +10,7 @@ export const installer = {
     install(VueInstance: any, options: VueOptions) {
         VueInstance.component('JobStatus', JobStatus)
 
-        Repository.createInstance(options.url, options.axios);
+        JobStatusRepository.createInstance(options.url, options.axios);
     },
 };
 

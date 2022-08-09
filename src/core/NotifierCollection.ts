@@ -1,6 +1,6 @@
 import JobStatusNotifier from "./JobStatusNotifier";
 import {AssociativeObject} from "../types/core";
-import QueryHasher from "./QueryHasher";
+import QueryHasher from "./../utils/QueryHasher";
 
 interface NotifierObject {
     [key: string]: JobStatusNotifier;

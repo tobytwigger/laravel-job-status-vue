@@ -1,4 +1,4 @@
-import QueryHasher from "../../../dist/core/QueryHasher";
+import QueryHasher from "../../../src/utils/QueryHasher";
 
 it('hashes an alias and a tag', () => {
     let encoded = QueryHasher.encode('myAlias', {key1: 'val1', key2: 'val2'});
