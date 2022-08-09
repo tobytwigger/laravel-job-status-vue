@@ -19,7 +19,7 @@ it('creates a new instance with the given parameters', () => {
 
 it('throws an exception if getInstance is called before createInstance', () => {
     expect(() => JobStatusClient.getInstance()).toThrow(Error);
-    expect(() => JobStatusClient.getInstance()).toThrow('Please call createInstance before getting an instance of the job status repository');
+    expect(() => JobStatusClient.getInstance()).toThrow('Please call createInstance before getting an instance of the job status client');
 });
 
 it('sends a signal', async () => {

@@ -6,7 +6,7 @@ interface ComponentData {
     loading: boolean;
     statusId: number|null;
     error: string|null;
-    jobStatusObserver: JobStatusObserver;
+    jobStatusObserver: JobStatusObserver|null;
 }
 
 interface DefaultProps {

@@ -2,33 +2,39 @@ import {AssociativeObject} from "../types/core";
 import JobStatusNotifierPool from "./JobStatusNotifierPool";
 import JobStatusNotifier from "./JobStatusNotifier";
 import JobStatusClient from "./JobStatusClient";
+import {Axios} from "axios";
 
 class JobStatusObserver {
 
     interval: NodeJS.Timer|null = null;
 
-    poll(jobAlias: string, tags: AssociativeObject, ms: number = 5000) : JobStatusNotifier {
-        this.addInterval(jobAlias, tags, setInterval(() => this.update(jobAlias, tags), ms));
-        return this.getNotifier(jobAlias, tags);
+    private readonly jobAlias: string;
+
+    private readonly tags: AssociativeObject;
+
+    constructor(jobAlias: string, tags: AssociativeObject) {
+        this.jobAlias = jobAlias;
+        this.tags = tags;
     }
 
-    getNotifier(jobAlias: string, tags: AssociativeObject): JobStatusNotifier {
-        return JobStatusNotifierPool.getInstance().get(jobAlias, tags);
+    poll(ms: number = 5000) : JobStatusNotifier {
+        this.interval = setInterval(() => this.update(), ms);
+        return JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags);
     }
 
-    update(jobAlias: string, tags: AssociativeObject) {
-        JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerLoading();
-        JobStatusClient.getInstance().get(jobAlias, tags)
-            .then(jobStatus => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerUpdate(jobStatus))
-            .catch(error => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerError(error))
-            .finally(() => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerFinishedLoading());
+    static setupClient(url: string, a: Axios) {
+        JobStatusClient.createInstance(url, a);
     }
 
-    private addInterval(jobAlias: string, tags: AssociativeObject, interval: NodeJS.Timer) {
-        this.interval = interval;
+    update(): Promise<void> {
+        JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags).triggerLoading();
+        return JobStatusClient.getInstance().get(this.jobAlias, this.tags)
+            .then(jobStatus => JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags).triggerUpdate(jobStatus))
+            .catch(error => JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags).triggerError(error))
+            .finally(() => JobStatusNotifierPool.getInstance().get(this.jobAlias, this.tags).triggerFinishedLoading());
     }
 
-    cleanup(jobAlias: string, tags: AssociativeObject) {
+    cleanup() {
         if(this.interval !== null) {
             clearInterval(this.interval);
         }

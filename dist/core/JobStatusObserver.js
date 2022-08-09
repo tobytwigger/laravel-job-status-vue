@@ -3,29 +3,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var JobStatusNotifierPool_1 = require("./JobStatusNotifierPool");
 var JobStatusClient_1 = require("./JobStatusClient");
 var JobStatusObserver = (function () {
-    function JobStatusObserver() {
+    function JobStatusObserver(jobAlias, tags) {
         this.interval = null;
+        this.jobAlias = jobAlias;
+        this.tags = tags;
     }
-    JobStatusObserver.prototype.poll = function (jobAlias, tags, ms) {
+    JobStatusObserver.prototype.poll = function (ms) {
         var _this = this;
         if (ms === void 0) { ms = 5000; }
-        this.addInterval(jobAlias, tags, setInterval(function () { return _this.update(jobAlias, tags); }, ms));
-        return this.getNotifier(jobAlias, tags);
+        this.interval = setInterval(function () { return _this.update(); }, ms);
+        return JobStatusNotifierPool_1.default.getInstance().get(this.jobAlias, this.tags);
     };
-    JobStatusObserver.prototype.getNotifier = function (jobAlias, tags) {
-        return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags);
+    JobStatusObserver.setupClient = function (url, a) {
+        JobStatusClient_1.default.createInstance(url, a);
     };
-    JobStatusObserver.prototype.update = function (jobAlias, tags) {
-        JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerLoading();
-        JobStatusClient_1.default.getInstance().get(jobAlias, tags)
-            .then(function (jobStatus) { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerUpdate(jobStatus); })
-            .catch(function (error) { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerError(error); })
-            .finally(function () { return JobStatusNotifierPool_1.default.getInstance().get(jobAlias, tags).triggerFinishedLoading(); });
+    JobStatusObserver.prototype.update = function () {
+        var _this = this;
+        JobStatusNotifierPool_1.default.getInstance().get(this.jobAlias, this.tags).triggerLoading();
+        return JobStatusClient_1.default.getInstance().get(this.jobAlias, this.tags)
+            .then(function (jobStatus) { return JobStatusNotifierPool_1.default.getInstance().get(_this.jobAlias, _this.tags).triggerUpdate(jobStatus); })
+            .catch(function (error) { return JobStatusNotifierPool_1.default.getInstance().get(_this.jobAlias, _this.tags).triggerError(error); })
+            .finally(function () { return JobStatusNotifierPool_1.default.getInstance().get(_this.jobAlias, _this.tags).triggerFinishedLoading(); });
     };
-    JobStatusObserver.prototype.addInterval = function (jobAlias, tags, interval) {
-        this.interval = interval;
-    };
-    JobStatusObserver.prototype.cleanup = function (jobAlias, tags) {
+    JobStatusObserver.prototype.cleanup = function () {
         if (this.interval !== null) {
             clearInterval(this.interval);
         }

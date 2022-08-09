@@ -38,12 +38,9 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.jobStatusObserver = new JobStatusObserver(this.jobAlias, this.tags);
         if(this.method === 'polling') {
-            this.jobStatusObserver.poll(
-                this.jobAlias,
-                this.tags,
-                5000
-            )
+            this.jobStatusObserver.poll(5000)
                 .onUpdated((jobStatus) => {
                     this.status = jobStatus;
                     this.error = null;
@@ -51,11 +48,11 @@ export default defineComponent({
                 .onError((error) => this.error = error.message)
                 .onLoading(() => this.loading = true)
                 .onFinishedLoading(() => this.loading = false);
-            this.jobStatusObserver.update(this.jobAlias, this.tags);
+            this.jobStatusObserver.update();
         }
     },
     destroyed() {
-        this.jobStatusObserver.cleanup(this.jobAlias, this.tags);
+        this.jobStatusObserver?.cleanup();
     },
     data(): ComponentData {
         return {
@@ -63,7 +60,7 @@ export default defineComponent({
             loading: false,
             statusId: null,
             error: null,
-            jobStatusObserver: new JobStatusObserver()
+            jobStatusObserver: null
         }
     },
     methods: {

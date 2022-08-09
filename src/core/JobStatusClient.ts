@@ -20,7 +20,7 @@ class JobStatusClient {
 
     public static getInstance(): JobStatusClient {
         if (JobStatusClient.instance === null) {
-            throw new Error('Please call createInstance before getting an instance of the job status repository');
+            throw new Error('Please call createInstance before getting an instance of the job status client');
         }
 
         return JobStatusClient.instance;

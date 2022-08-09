@@ -1,6 +1,8 @@
 import JobStatusNotifier from "./JobStatusNotifier";
 import {AssociativeObject} from "../types/core";
 import QueryHasher from "./../utils/QueryHasher";
+import JobStatusClient from "./JobStatusClient";
+import axios, {Axios} from "axios";
 
 interface NotifierObject {
     [key: string]: JobStatusNotifier;
@@ -25,6 +27,7 @@ class NotifierCollection {
     private _getKey(jobAlias: string, tags: AssociativeObject) : string{
         return QueryHasher.encode(jobAlias, tags);
     }
+
 }
 
 export default NotifierCollection;
