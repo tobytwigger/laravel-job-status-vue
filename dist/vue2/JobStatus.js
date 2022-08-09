@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = require("vue");
 var JobStatusObserver_1 = require("./../core/JobStatusObserver");
-var JobStatusRepository_1 = require("./../core/JobStatusRepository");
+var JobStatusClient_1 = require("./../core/JobStatusClient");
 exports.default = (0, vue_1.defineComponent)({
     render: function () {
         if (this.loading && this.status === null) {
@@ -41,7 +41,7 @@ exports.default = (0, vue_1.defineComponent)({
                 _this.status = jobStatus;
                 _this.error = null;
             })
-                .onError(function (error) { var _a; return _this.error = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data.message; })
+                .onError(function (error) { return _this.error = error.message; })
                 .onLoading(function () { return _this.loading = true; })
                 .onFinishedLoading(function () { return _this.loading = false; });
             this.jobStatusObserver.update(this.jobAlias, this.tags);
@@ -69,7 +69,7 @@ exports.default = (0, vue_1.defineComponent)({
             if (this.status === null) {
                 return null;
             }
-            return JobStatusRepository_1.default.getInstance().sendSignal(this.status.id, signal, cancelJob, parameters);
+            return JobStatusClient_1.default.getInstance().sendSignal(this.status.id, signal, cancelJob, parameters);
         },
     },
     computed: {

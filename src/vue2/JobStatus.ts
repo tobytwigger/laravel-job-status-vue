@@ -48,7 +48,7 @@ export default defineComponent({
                     this.status = jobStatus;
                     this.error = null;
                 })
-                .onError((error) => this.error = error.response?.data.message)
+                .onError((error) => this.error = error.message)
                 .onLoading(() => this.loading = true)
                 .onFinishedLoading(() => this.loading = false);
             this.jobStatusObserver.update(this.jobAlias, this.tags);

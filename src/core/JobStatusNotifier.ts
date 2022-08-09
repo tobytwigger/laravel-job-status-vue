@@ -1,5 +1,4 @@
 import {AssociativeObject, JobStatus} from "../types/core";
-import {AxiosError} from "axios";
 
 class JobStatusNotifier {
 
@@ -13,7 +12,7 @@ class JobStatusNotifier {
 
     finishLoadingCallbacks: (() => void)[] = [];
 
-    errorCallbacks: ((error: AxiosError) => void)[] = [];
+    errorCallbacks: ((error: Error) => void)[] = [];
 
     constructor(jobAlias: string, tags: AssociativeObject) {
         this.jobAlias = jobAlias;
@@ -35,7 +34,7 @@ class JobStatusNotifier {
         return this;
     }
 
-    onError(callback: (error: AxiosError) => void): this {
+    onError(callback: (error: Error) => void): this {
         this.errorCallbacks.push(callback);
         return this;
     }
@@ -52,8 +51,8 @@ class JobStatusNotifier {
         this.finishLoadingCallbacks.forEach((callback: () => void) => callback());
     }
 
-    triggerError(error: AxiosError) {
-        this.errorCallbacks.forEach((callback: (error: AxiosError) => void) => callback(error));
+    triggerError(error: Error) {
+        this.errorCallbacks.forEach((callback: (error: Error) => void) => callback(error));
     }
 
 }
