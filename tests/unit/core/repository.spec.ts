@@ -25,21 +25,9 @@ it('throws an exception if getInstance is called before createInstance', () => {
 it('sends a signal', async () => {
     mockedAxios.post.mockResolvedValue(null);
     repository.createInstance('/url', mockedAxios);
-    const jobStatus : JobStatus = {
-        created_at: "",
-        id: 55,
-        isFinished: false,
-        job_alias: "",
-        job_class: "",
-        lastMessage: "",
-        percentage: 0,
-        run_count: 0,
-        status: "",
-        updated_at: ""
 
-    }
     let response = await repository.getInstance().sendSignal(
-        jobStatus,
+        55,
         'cancel',
         true,
         {triggered_at: '23:33'}
@@ -76,4 +64,12 @@ it('gets a job status', async () => {
 
     expect(response).toBe(jobStatus);
     expect(mockedAxios.get).toHaveBeenCalledWith('/url/job-status?alias=my_alias&tags%5Bkey1%5D=value1');
+});
+
+it('throws an error if getting a job status fails', async() => {
+
+});
+
+it('throws an error if sending a signal fails', async() => {
+
 });

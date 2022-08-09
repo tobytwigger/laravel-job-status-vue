@@ -26,11 +26,11 @@ class Repository {
         this.axios = axios;
     }
 
-    sendSignal(jobStatus: JobStatus, signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null> {
+    sendSignal(jobStatusId: number, signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null> {
         const url = this.url
             + (this.url.endsWith('/') ? '' : '/')
             + 'job-status/'
-            + jobStatus.id
+            + jobStatusId
             + '/job-signal';
 
         return new Promise<null>((resolve, reject) => {

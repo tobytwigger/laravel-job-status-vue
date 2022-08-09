@@ -9,10 +9,11 @@ declare const _default: import("vue/types/v3-define-component").DefineComponent<
         required: false;
         default: () => {};
     };
-    polling: {
-        type: BooleanConstructor;
+    method: {
+        type: StringConstructor;
         required: false;
-        default: boolean;
+        validator: (val: unknown) => boolean;
+        default: string;
     };
 }, import("vue").Data, ComponentData, {
     defaultSlotProperties(): DefaultProps | null;
@@ -29,13 +30,14 @@ declare const _default: import("vue/types/v3-define-component").DefineComponent<
         required: false;
         default: () => {};
     };
-    polling: {
-        type: BooleanConstructor;
+    method: {
+        type: StringConstructor;
         required: false;
-        default: boolean;
+        validator: (val: unknown) => boolean;
+        default: string;
     };
 }>>, {
+    method: string;
     tags: Record<string, any>;
-    polling: boolean;
 }>;
 export default _default;

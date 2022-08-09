@@ -76,7 +76,7 @@ export default defineComponent({
                 return null;
             }
             return repository.getInstance().sendSignal(
-                this.status,
+                this.status.id,
                 signal,
                 cancelJob,
                 parameters

@@ -26,15 +26,16 @@ exports.default = (0, vue_1.defineComponent)({
             required: false,
             default: function () { return {}; }
         },
-        polling: {
-            type: Boolean,
+        method: {
+            type: String,
             required: false,
-            default: true
+            validator: function (val) { return val === 'polling'; },
+            default: 'polling'
         }
     },
     mounted: function () {
         var _this = this;
-        if (this.polling) {
+        if (this.method === 'polling') {
             this.jobStatusObserver.poll(this.jobAlias, this.tags, 5000)
                 .onUpdated(function (jobStatus) {
                 _this.status = jobStatus;
@@ -68,7 +69,7 @@ exports.default = (0, vue_1.defineComponent)({
             if (this.status === null) {
                 return null;
             }
-            return repository_1.default.getInstance().sendSignal(this.status, signal, cancelJob, parameters);
+            return repository_1.default.getInstance().sendSignal(this.status.id, signal, cancelJob, parameters);
         },
     },
     computed: {

@@ -14,13 +14,13 @@ var Repository = (function () {
         }
         return Repository.instance;
     };
-    Repository.prototype.sendSignal = function (jobStatus, signal, cancelJob, parameters) {
+    Repository.prototype.sendSignal = function (jobStatusId, signal, cancelJob, parameters) {
         var _this = this;
         if (parameters === void 0) { parameters = {}; }
         var url = this.url
             + (this.url.endsWith('/') ? '' : '/')
             + 'job-status/'
-            + jobStatus.id
+            + jobStatusId
             + '/job-signal';
         return new Promise(function (resolve, reject) {
             var data = {

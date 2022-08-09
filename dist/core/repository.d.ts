@@ -7,7 +7,7 @@ declare class Repository {
     static createInstance(url: string, axios: Axios): void;
     static getInstance(): Repository;
     private constructor();
-    sendSignal(jobStatus: JobStatus, signal: string, cancelJob: boolean, parameters?: AssociativeObject): Promise<null>;
+    sendSignal(jobStatusId: number, signal: string, cancelJob: boolean, parameters?: AssociativeObject): Promise<null>;
     get(jobAlias: string, tags: AssociativeObject): Promise<JobStatus | null>;
     static clearInstance(): void;
 }
