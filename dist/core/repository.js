@@ -1,10 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ApiUrlGenerator_1 = require("./ApiUrlGenerator");
 var Repository = (function () {
     function Repository(url, axios) {
-        this.url = url;
+        this._url = new ApiUrlGenerator_1.default(url);
         this.axios = axios;
     }
+    Object.defineProperty(Repository.prototype, "url", {
+        get: function () {
+            return this._url.url;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Repository.createInstance = function (url, axios) {
         Repository.instance = new Repository(url, axios);
     };
@@ -17,33 +25,21 @@ var Repository = (function () {
     Repository.prototype.sendSignal = function (jobStatusId, signal, cancelJob, parameters) {
         var _this = this;
         if (parameters === void 0) { parameters = {}; }
-        var url = this.url
-            + (this.url.endsWith('/') ? '' : '/')
-            + 'job-status/'
-            + jobStatusId
-            + '/job-signal';
         return new Promise(function (resolve, reject) {
             var data = {
                 signal: signal,
                 parameters: parameters,
                 cancel_job: cancelJob
             };
-            _this.axios.post(url, data)
+            _this.axios.post(_this._url.sendSignal(jobStatusId), data)
                 .then(function () { return resolve(null); })
                 .catch(function (error) { return reject(error); });
         });
     };
     Repository.prototype.get = function (jobAlias, tags) {
         var _this = this;
-        var urlParams = new URLSearchParams();
-        urlParams.set('alias', jobAlias);
-        Object.keys(tags).forEach(function (key) { return urlParams.set('tags[' + key + ']', tags[key]); });
-        var url = this.url
-            + (this.url.endsWith('/') ? '' : '/')
-            + 'job-status?'
-            + urlParams.toString();
         return new Promise(function (resolve, reject) {
-            _this.axios.get(url)
+            _this.axios.get(_this._url.searchForJobStatus(jobAlias, tags))
                 .then(function (response) {
                 resolve(response.data);
             })

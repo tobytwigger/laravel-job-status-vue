@@ -1,9 +1,11 @@
 import { AssociativeObject, JobStatus } from "../types/core";
 import { Axios } from "axios";
+import ApiUrlGenerator from "./ApiUrlGenerator";
 declare class Repository {
     private static instance;
-    readonly url: string;
+    readonly _url: ApiUrlGenerator;
     readonly axios: Axios;
+    get url(): string;
     static createInstance(url: string, axios: Axios): void;
     static getInstance(): Repository;
     private constructor();

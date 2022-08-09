@@ -1,13 +1,18 @@
 import {AssociativeObject, JobStatus} from "../types/core";
 import {Axios, AxiosError, AxiosResponse} from "axios";
+import ApiUrlGenerator from "./ApiUrlGenerator";
 
 class Repository {
 
     private static instance: Repository|null = null;
 
-    readonly url: string;
+    readonly _url: ApiUrlGenerator;
 
     readonly axios: Axios;
+
+    get url(): string {
+        return this._url.url;
+    }
 
     public static createInstance(url: string, axios: Axios) {
         Repository.instance = new Repository(url, axios)
@@ -22,17 +27,11 @@ class Repository {
     }
 
     private constructor(url: string, axios: Axios) {
-        this.url = url;
+        this._url = new ApiUrlGenerator(url);
         this.axios = axios;
     }
 
     sendSignal(jobStatusId: number, signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null> {
-        const url = this.url
-            + (this.url.endsWith('/') ? '' : '/')
-            + 'job-status/'
-            + jobStatusId
-            + '/job-signal';
-
         return new Promise<null>((resolve, reject) => {
             const data = {
                 signal,
@@ -40,23 +39,15 @@ class Repository {
                 cancel_job: cancelJob
             };
 
-            this.axios.post(url, data)
+            this.axios.post(this._url.sendSignal(jobStatusId), data)
                 .then(() => resolve(null))
                 .catch((error) => reject(error));
         });
     }
 
     get(jobAlias: string, tags: AssociativeObject): Promise<JobStatus | null> {
-        const urlParams = new URLSearchParams();
-        urlParams.set('alias', jobAlias);
-        Object.keys(tags).forEach(key => urlParams.set('tags[' + key + ']', tags[key]));
-        const url = this.url
-            + (this.url.endsWith('/') ? '' : '/')
-            + 'job-status?'
-            + urlParams.toString()
-
         return new Promise<JobStatus | null>((resolve, reject) => {
-            this.axios.get(url)
+            this.axios.get(this._url.searchForJobStatus(jobAlias, tags))
                 .then((response: AxiosResponse) => {
                     resolve(response.data);
                 })

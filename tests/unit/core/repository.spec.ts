@@ -73,3 +73,11 @@ it('throws an error if getting a job status fails', async() => {
 it('throws an error if sending a signal fails', async() => {
 
 });
+
+it('handles a url with a trailing slash for signals', () => {
+
+});
+
+it('handles a url with a trailing slash for getting a job status', () => {
+
+});
