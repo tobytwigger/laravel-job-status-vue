@@ -9,5 +9,6 @@ declare class Repository {
     private constructor();
     sendSignal(jobStatus: JobStatus, signal: string, cancelJob: boolean, parameters?: AssociativeObject): Promise<null>;
     get(jobAlias: string, tags: AssociativeObject): Promise<JobStatus | null>;
+    static clearInstance(): void;
 }
 export default Repository;

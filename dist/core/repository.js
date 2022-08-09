@@ -9,8 +9,8 @@ var Repository = (function () {
         Repository.instance = new Repository(url, axios);
     };
     Repository.getInstance = function () {
-        if (!Repository.instance) {
-            throw new Error('Please call `createInstance` before getting an instance of the job status repository');
+        if (Repository.instance === null) {
+            throw new Error('Please call createInstance before getting an instance of the job status repository');
         }
         return Repository.instance;
     };
@@ -29,7 +29,8 @@ var Repository = (function () {
                 cancel_job: cancelJob
             };
             _this.axios.post(url, data)
-                .finally(function () { return resolve(null); });
+                .then(function () { return resolve(null); })
+                .catch(function (error) { return reject(error); });
         });
     };
     Repository.prototype.get = function (jobAlias, tags) {
@@ -55,6 +56,10 @@ var Repository = (function () {
             });
         });
     };
+    Repository.clearInstance = function () {
+        Repository.instance = null;
+    };
+    Repository.instance = null;
     return Repository;
 }());
 exports.default = Repository;

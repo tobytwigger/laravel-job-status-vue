@@ -1,5 +1,5 @@
 {
-    "name": "@tobytwigger/laravel-job-status-vue",
+    "name": "@twigger/laravel-job-status-vue",
     "version": "0.0.1",
     "description": "A Vue integration for the Laravel Job Status package",
     "main": "dist/index.js",
@@ -42,6 +42,7 @@
         "axios": "^0.26",
         "jest": "^27.5.1",
         "jest-mock-axios": "^4.5.0",
+        "jsdoc": "^3.6.11",
         "prettier": "^2.5.1",
         "rollup": "^2.67.1",
         "rollup-plugin-clear": "^2.0.7",

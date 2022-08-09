@@ -47,7 +47,6 @@ exports.default = (0, vue_1.defineComponent)({
         }
     },
     destroyed: function () {
-        console.log('destroyed');
         this.jobStatusObserver.cleanup(this.jobAlias, this.tags);
     },
     data: function () {

@@ -3,7 +3,7 @@ import {Axios, AxiosError, AxiosResponse} from "axios";
 
 class Repository {
 
-    private static instance: Repository;
+    private static instance: Repository|null = null;
 
     readonly url: string;
 
@@ -14,8 +14,8 @@ class Repository {
     }
 
     public static getInstance(): Repository {
-        if (!Repository.instance) {
-            throw new Error('Please call `createInstance` before getting an instance of the job status repository');
+        if (Repository.instance === null) {
+            throw new Error('Please call createInstance before getting an instance of the job status repository');
         }
 
         return Repository.instance;
@@ -27,7 +27,6 @@ class Repository {
     }
 
     sendSignal(jobStatus: JobStatus, signal: string, cancelJob: boolean, parameters: AssociativeObject = {}): Promise<null> {
-
         const url = this.url
             + (this.url.endsWith('/') ? '' : '/')
             + 'job-status/'
@@ -42,7 +41,8 @@ class Repository {
             };
 
             this.axios.post(url, data)
-                .finally(() => resolve(null));
+                .then(() => resolve(null))
+                .catch((error) => reject(error));
         });
     }
 
@@ -69,6 +69,9 @@ class Repository {
         });
     }
 
+    static clearInstance() {
+        Repository.instance = null;
+    }
 }
 
 export default Repository;

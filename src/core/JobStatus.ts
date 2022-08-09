@@ -31,14 +31,15 @@ export default defineComponent({
             required: false,
             default: () => { return {}; }
         },
-        polling: {
-            type: Boolean,
+        method: {
+            type: String,
             required: false,
-            default: true
+            validator: (val) => val === 'polling',
+            default: 'polling'
         }
     },
     mounted() {
-        if(this.polling) {
+        if(this.method === 'polling') {
             this.jobStatusObserver.poll(
                 this.jobAlias,
                 this.tags,
@@ -55,7 +56,6 @@ export default defineComponent({
         }
     },
     destroyed() {
-        console.log('destroyed');
         this.jobStatusObserver.cleanup(this.jobAlias, this.tags);
     },
     data(): ComponentData {
