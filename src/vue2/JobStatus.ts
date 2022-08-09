@@ -1,7 +1,7 @@
 import { defineComponent, h } from 'vue'
 import {AssociativeObject, ComponentData, DefaultProps} from "../types/core";
 import JobStatusObserver from "./../core/JobStatusObserver";
-import JobStatusRepository from "./../core/JobStatusRepository";
+import JobStatusClient from "./../core/JobStatusClient";
 
 export default defineComponent({
     render() {
@@ -74,7 +74,7 @@ export default defineComponent({
             if(this.status === null) {
                 return null;
             }
-            return JobStatusRepository.getInstance().sendSignal(
+            return JobStatusClient.getInstance().sendSignal(
                 this.status.id,
                 signal,
                 cancelJob,

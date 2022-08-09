@@ -1,7 +1,7 @@
 import {AssociativeObject} from "../types/core";
 import JobStatusNotifierPool from "./JobStatusNotifierPool";
 import JobStatusNotifier from "./JobStatusNotifier";
-import JobStatusRepository from "./JobStatusRepository";
+import JobStatusClient from "./JobStatusClient";
 
 class JobStatusObserver {
 
@@ -18,7 +18,7 @@ class JobStatusObserver {
 
     update(jobAlias: string, tags: AssociativeObject) {
         JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerLoading();
-        JobStatusRepository.getInstance().get(jobAlias, tags)
+        JobStatusClient.getInstance().get(jobAlias, tags)
             .then(jobStatus => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerUpdate(jobStatus))
             .catch(error => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerError(error))
             .finally(() => JobStatusNotifierPool.getInstance().get(jobAlias, tags).triggerFinishedLoading());
