@@ -1,5 +1,5 @@
 {
-    "name": "@twigger/laravel-job-status-vue",
+    "name": "@tobytwigger/laravel-job-status-vue",
     "version": "0.0.1",
     "description": "A Vue integration for the Laravel Job Status package",
     "main": "dist/index.js",
