@@ -13,6 +13,7 @@ interface DefaultProps {
     status: string;
     lastMessage: string;
     complete: boolean;
+    percentage: number;
     cancel(): Promise<null>|null,
     signal(signal: string, cancelJob: boolean, parameters: AssociativeObject): Promise<null>|null
 }

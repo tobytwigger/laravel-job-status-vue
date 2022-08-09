@@ -106,6 +106,7 @@ export default defineComponent({
                     status: this.status.status,
                     lastMessage: this.status.lastMessage,
                     complete: this.status.isFinished,
+                    percentage: this.status.percentage,
                     cancel: () => this.cancel(),
                     signal: (signal: string, cancelJob: boolean, parameters: AssociativeObject) => this.signal(signal, cancelJob, parameters)
                 }

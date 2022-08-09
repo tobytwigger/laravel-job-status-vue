@@ -102,6 +102,7 @@ exports.default = (0, vue_1.defineComponent)({
                     status: this.status.status,
                     lastMessage: this.status.lastMessage,
                     complete: this.status.isFinished,
+                    percentage: this.status.percentage,
                     cancel: function () { return _this.cancel(); },
                     signal: function (signal, cancelJob, parameters) { return _this.signal(signal, cancelJob, parameters); }
                 };
