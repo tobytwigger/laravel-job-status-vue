@@ -6,19 +6,31 @@ import JobStatusClient from "./../core/JobStatusClient";
 export default defineComponent({
     render() {
         if(this.loading && this.status === null) {
-            // @ts-ignore
-            return h('div', this.$scopedSlots.loading());
+            if(this.$scopedSlots.hasOwnProperty('loading')) {
+                // @ts-ignore
+                return h('div', this.$scopedSlots.loading());
+            }
+            return h('div', 'Loading');
         }
         if(this.error) {
-            // @ts-ignore
-            return h('div', this.$scopedSlots.error({message: this.error}))
+            if(this.$scopedSlots.hasOwnProperty('error')) {
+                // @ts-ignore
+                return h('div', this.$scopedSlots.error({message: this.error}))
+            }
+            return h('div', 'An error occured');
         }
         if(this.status === null) {
-            // @ts-ignore
-            return h('div', this.$scopedSlots.empty());
+            if(this.$scopedSlots.hasOwnProperty('empty')) {
+                // @ts-ignore
+                return h('div', this.$scopedSlots.empty());
+            }
+            return h('div', 'No job found');
         }
-        // @ts-ignore
-        return h('div', this.$scopedSlots.default(this.defaultSlotProperties));
+        if(this.$scopedSlots.hasOwnProperty('default')) {
+            // @ts-ignore
+            return h('div', this.$scopedSlots.default(this.defaultSlotProperties));
+        }
+        return h('div', "Please define a default slot to see the job status.");
     },
     props: {
         jobAlias: {
@@ -38,18 +50,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.jobStatusObserver = new JobStatusObserver(this.jobAlias, this.tags);
-        if(this.method === 'polling') {
-            this.jobStatusObserver.poll(5000)
-                .onUpdated((jobStatus) => {
-                    this.status = jobStatus;
-                    this.error = null;
-                })
-                .onError((error) => this.error = error.message)
-                .onLoading(() => this.loading = true)
-                .onFinishedLoading(() => this.loading = false);
-            this.jobStatusObserver.update();
-        }
+        this.setUpObserver();
     },
     destroyed() {
         this.jobStatusObserver?.cleanup();
@@ -64,6 +65,25 @@ export default defineComponent({
         }
     },
     methods: {
+        setUpObserver() {
+            if(this.jobStatusObserver !== null) {
+                this.jobStatusObserver.cleanup();
+            }
+            this.jobStatusObserver = new JobStatusObserver(this.jobAlias, this.tags);
+            if(this.method === 'polling') {
+                this.jobStatusObserver.poll(5000)
+                    .onUpdated((jobStatus) => {
+                        this.status = jobStatus;
+                        this.error = null;
+                    })
+                    .onError((error) => this.error = error.message)
+                    .onLoading(() => this.loading = true)
+                    .onFinishedLoading(() => {
+                        this.loading = false
+                    });
+                this.jobStatusObserver.update();
+            }
+        },
         cancel() {
             return this.signal('cancel', true);
         },
