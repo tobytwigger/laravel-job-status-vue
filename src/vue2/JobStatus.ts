@@ -5,7 +5,7 @@ import JobStatusClient from "./../core/JobStatusClient";
 
 export default defineComponent({
     render() {
-        if(this.loading && this.status === null) {
+        if(this.$scopedSlots.hasOwnProperty('loading') && this.loading && this.status === null) {
             if(this.$scopedSlots.hasOwnProperty('loading')) {
                 // @ts-ignore
                 return h('div', this.$scopedSlots.loading());
@@ -22,7 +22,7 @@ export default defineComponent({
         if(this.status === null) {
             if(this.$scopedSlots.hasOwnProperty('empty')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.empty());
+                return h('div', this.$scopedSlots.empty({loading: this.loading}));
             }
             return h('div', 'No job found');
         }
