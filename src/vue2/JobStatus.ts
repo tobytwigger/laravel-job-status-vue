@@ -47,6 +47,11 @@ export default defineComponent({
             required: false,
             validator: (val) => val === 'polling',
             default: 'polling'
+        },
+        pollInterval: {
+            type: Number,
+            required: false,
+            default: 5000
         }
     },
     mounted() {
@@ -71,7 +76,7 @@ export default defineComponent({
             }
             this.jobStatusObserver = new JobStatusObserver(this.jobAlias, this.tags);
             if(this.method === 'polling') {
-                this.jobStatusObserver.poll(5000)
+                this.jobStatusObserver.poll(this.pollInterval)
                     .onUpdated((jobStatus) => {
                         this.status = jobStatus;
                         this.error = null;

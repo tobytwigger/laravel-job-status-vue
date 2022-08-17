@@ -251,6 +251,37 @@ it('sends a custom signal from the default slot with the signal function', async
     });
 });
 
+it('lets the interval length be specified', async() => {
+    const jobStatus: JobStatusType = {
+        created_at: "",
+        id: 55,
+        isFinished: false,
+        job_alias: "my_alias",
+        job_class: "",
+        lastMessage: "This was the last message",
+        percentage: 0,
+        run_count: 0,
+        status: "queued",
+        updated_at: ""
+    };
+
+    mockedAxios.get.mockResolvedValue({data: jobStatus});
+
+    const wrapper = mountComponent({
+        propsData: {
+            method: 'polling',
+            jobAlias: 'my_alias',
+            tags: {key1: 'val1'},
+            pollInterval: 50
+        }
+    });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    expect(setInterval).toHaveBeenCalledTimes(1);
+    expect(setInterval).toHaveBeenCalledWith(expect.any(Function), 50);
+});
+
 it('removes the interval when the vue component is destroyed', async() => {
     const jobStatus: JobStatusType = {
         created_at: "",
