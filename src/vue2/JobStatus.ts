@@ -8,7 +8,7 @@ export default defineComponent({
         if(this.$scopedSlots.hasOwnProperty('loading') && this.loading && this.status === null) {
             if(this.$scopedSlots.hasOwnProperty('loading')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.loading());
+                return h('div', this.$scopedSlots.loading({initialLoad: this.initialLoad}));
             }
             return h('div', 'Loading');
         }
@@ -22,7 +22,7 @@ export default defineComponent({
         if(this.status === null) {
             if(this.$scopedSlots.hasOwnProperty('empty')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.empty({loading: this.loading}));
+                return h('div', this.$scopedSlots.empty({loading: this.loading, initialLoad: this.initialLoad}));
             }
             return h('div', 'No job found');
         }
@@ -64,6 +64,7 @@ export default defineComponent({
         return {
             status: null,
             loading: false,
+            initialLoad: false,
             statusId: null,
             error: null,
             jobStatusObserver: null
@@ -71,6 +72,7 @@ export default defineComponent({
     },
     methods: {
         setUpObserver() {
+            this.initialLoad = true;
             if(this.jobStatusObserver !== null) {
                 this.jobStatusObserver.cleanup();
             }
@@ -84,7 +86,8 @@ export default defineComponent({
                     .onError((error) => this.error = error.message)
                     .onLoading(() => this.loading = true)
                     .onFinishedLoading(() => {
-                        this.loading = false
+                        this.loading = false;
+                        this.initialLoad = false;
                     });
                 this.jobStatusObserver.update();
             }

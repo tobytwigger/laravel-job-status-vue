@@ -4,6 +4,7 @@ import JobStatusObserver from "../core/JobStatusObserver";
 interface ComponentData {
     status: JobStatus|null;
     loading: boolean;
+    initialLoad: boolean;
     statusId: number|null;
     error: string|null;
     jobStatusObserver: JobStatusObserver|null;

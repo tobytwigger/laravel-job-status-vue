@@ -386,14 +386,63 @@ it('Passes if the component is loading to the empty slot', async() => {
         }
     });
 
-    console.log(wrapper.find('div').html());
-
     expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No</div>\n</div>');
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
     expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? Yes</div>\n</div>');
     await wrapper.vm.$nextTick();
     expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No</div>\n</div>');
+});
+
+it('Passes initial load to the component empty slot if it is loading for the first time', async() => {
+    mockedAxios.get.mockResolvedValue({data: null});
+
+    const wrapper = mountComponent({
+        propsData: {
+            method: 'polling',
+            jobAlias: 'my_alias',
+            tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            empty: '<template v-slot:empty="params"><div>Is loading? {{(params.loading ? \'Yes\' : \'No\')}}. Initial? {{(params.initialLoad ? \'Yes\' : \'No\')}}</div></template>',
+        }
+    });
+
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No. Initial? No</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? Yes. Initial? Yes</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No. Initial? No</div>\n</div>');
+    jest.runOnlyPendingTimers();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? Yes. Initial? No</div>\n</div>');
+});
+
+it('Passes initial load to the component loading slot if it is loading for the first time', async() => {
+    mockedAxios.get.mockResolvedValue({data: null});
+
+    const wrapper = mountComponent({
+        propsData: {
+            method: 'polling',
+            jobAlias: 'my_alias',
+            tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            empty: '<div>Empty</div>',
+            loading: '<template v-slot:loading="params"><div>Initial? {{(params.initialLoad ? \'Yes\' : \'No\')}}</div></template>',
+        }
+    });
+
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Empty</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Initial? Yes</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Empty</div>\n</div>');
+    jest.runOnlyPendingTimers();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Initial? No</div>\n</div>');
 });
 
 
