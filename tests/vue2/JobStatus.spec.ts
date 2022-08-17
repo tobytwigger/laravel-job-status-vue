@@ -309,7 +309,7 @@ it('Shows a default slot for default', async() => {
 
 });
 
-it('Shows a default slot for loading', async() => {
+it('Show the empty slot if loading slot is not defined', async() => {
     const jobStatus: JobStatusType = {
         created_at: "",
         id: 55,
@@ -330,11 +330,41 @@ it('Shows a default slot for loading', async() => {
             method: 'polling',
             jobAlias: 'my_alias',
             tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            empty: '<div>empty</div>'
         }
     });
     await wrapper.vm.$nextTick();
-    expect(wrapper.find('div').html()).toBe('<div>Loading</div>');
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>empty</div>\n</div>');
 });
+
+it('Passes if the component is loading to the empty slot', async() => {
+    mockedAxios.get.mockResolvedValue({data: null});
+
+    const wrapper = mountComponent({
+        propsData: {
+            method: 'polling',
+            jobAlias: 'my_alias',
+            tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            empty: '<template v-slot:empty="params"><div>Is loading? {{(params.loading ? \'Yes\' : \'No\')}}</div></template>',
+            default: '<template v-slot:default="params"><div>Job status: {{params.status}}. Last message: {{params.lastMessage}}. Complete? {{(params.complete ? \'Yes\' : \'No\')}}</div></template>',
+            error: '<template v-slot:error="params"><div>Error: {{params.message}}</div></template>',
+        }
+    });
+
+    console.log(wrapper.find('div').html());
+
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? Yes</div>\n</div>');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>Is loading? No</div>\n</div>');
+});
+
 
 it('Shows a default slot for error', async() => {
     mockedAxios.get.mockImplementation(() => {
