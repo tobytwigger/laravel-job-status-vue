@@ -1,12 +1,11 @@
-import {AssociativeObject, JobStatus} from "../types/core";
+import { AssociativeObject, JobStatus } from '../types/core';
 
 class JobStatusNotifier {
-
     jobAlias: string;
 
     tags: AssociativeObject;
 
-    updateCallbacks: ((jobStatus: JobStatus|null) => void)[] = [];
+    updateCallbacks: ((jobStatus: JobStatus | null) => void)[] = [];
 
     loadingCallbacks: (() => void)[] = [];
 
@@ -19,7 +18,7 @@ class JobStatusNotifier {
         this.tags = tags;
     }
 
-    onUpdated(callback: (jobStatus : JobStatus|null) => void): this {
+    onUpdated(callback: (jobStatus: JobStatus | null) => void): this {
         this.updateCallbacks.push(callback);
         return this;
     }
@@ -39,8 +38,8 @@ class JobStatusNotifier {
         return this;
     }
 
-    triggerUpdate(jobStatus: JobStatus|null) {
-        this.updateCallbacks.forEach((callback: (jobStatus: JobStatus|null) => void) => callback(jobStatus));
+    triggerUpdate(jobStatus: JobStatus | null) {
+        this.updateCallbacks.forEach((callback: (jobStatus: JobStatus | null) => void) => callback(jobStatus));
     }
 
     triggerLoading() {
@@ -54,7 +53,6 @@ class JobStatusNotifier {
     triggerError(error: Error) {
         this.errorCallbacks.forEach((callback: (error: Error) => void) => callback(error));
     }
-
 }
 
 export default JobStatusNotifier;

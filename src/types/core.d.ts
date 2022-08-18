@@ -1,13 +1,13 @@
-import {AxiosResponse} from "axios";
-import JobStatusObserver from "../core/JobStatusObserver";
+import { AxiosResponse } from 'axios';
+import JobStatusObserver from '../core/JobStatusObserver';
 
 interface ComponentData {
-    status: JobStatus|null;
+    status: JobStatus | null;
     loading: boolean;
     initialLoad: boolean;
-    statusId: number|null;
-    error: string|null;
-    jobStatusObserver: JobStatusObserver|null;
+    statusId: number | null;
+    error: string | null;
+    jobStatusObserver: JobStatusObserver | null;
 }
 
 interface DefaultProps {
@@ -15,21 +15,21 @@ interface DefaultProps {
     lastMessage: string;
     complete: boolean;
     percentage: number;
-    cancel(): Promise<null>|null,
-    signal(signal: string, cancelJob: boolean, parameters: AssociativeObject): Promise<null>|null
+    cancel(): Promise<null> | null;
+    signal(signal: string, cancelJob: boolean, parameters: AssociativeObject): Promise<null> | null;
 }
 
 interface JobStatus {
-    created_at: string
-    id: number
-    isFinished: boolean
-    job_alias: string
-    job_class: string
-    lastMessage: string
-    status: string
-    updated_at: string
-    percentage: number
-    run_count: number
+    created_at: string;
+    id: number;
+    isFinished: boolean;
+    job_alias: string;
+    job_class: string;
+    lastMessage: string;
+    status: string;
+    updated_at: string;
+    percentage: number;
+    run_count: number;
 }
 
 interface AssociativeObject {

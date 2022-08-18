@@ -1,4 +1,4 @@
-import {AssociativeObject} from "../types/core";
+import { AssociativeObject } from '../types/core';
 
 class ApiUrlGenerator {
     url: string;
@@ -7,15 +7,13 @@ class ApiUrlGenerator {
     }
 
     withPrefix(prefix: string): string {
-        return this.url
-            + (this.url.endsWith('/') ? '' : '/')
-            + prefix;
+        return this.url + (this.url.endsWith('/') ? '' : '/') + prefix;
     }
 
     searchForJobStatus(jobAlias: string, tags: AssociativeObject): string {
         const urlParams = new URLSearchParams();
         urlParams.set('alias', jobAlias);
-        Object.keys(tags).forEach(key => urlParams.set('tags[' + key + ']', tags[key]));
+        Object.keys(tags).forEach((key) => urlParams.set('tags[' + key + ']', tags[key]));
 
         return this.withPrefix('job-status?' + urlParams.toString());
     }

@@ -1,8 +1,8 @@
-import JobStatusNotifier from "./JobStatusNotifier";
-import {AssociativeObject} from "../types/core";
-import QueryHasher from "./../utils/QueryHasher";
-import JobStatusClient from "./JobStatusClient";
-import axios, {Axios} from "axios";
+import JobStatusNotifier from './JobStatusNotifier';
+import { AssociativeObject } from '../types/core';
+import QueryHasher from './../utils/QueryHasher';
+import JobStatusClient from './JobStatusClient';
+import axios, { Axios } from 'axios';
 
 interface NotifierObject {
     [key: string]: JobStatusNotifier;
@@ -11,9 +11,9 @@ interface NotifierObject {
 class NotifierCollection {
     notifiers: NotifierObject = {};
 
-    get(jobAlias: string, tags: AssociativeObject): JobStatusNotifier|null {
+    get(jobAlias: string, tags: AssociativeObject): JobStatusNotifier | null {
         const key: string = this._getKey(jobAlias, tags);
-        if(Object.keys(this.notifiers).indexOf(key) > -1) {
+        if (Object.keys(this.notifiers).indexOf(key) > -1) {
             return this.notifiers[key];
         }
         return null;
@@ -24,10 +24,9 @@ class NotifierCollection {
         this.notifiers[key] = jobStatusNotifier;
     }
 
-    private _getKey(jobAlias: string, tags: AssociativeObject) : string{
+    private _getKey(jobAlias: string, tags: AssociativeObject): string {
         return QueryHasher.encode(jobAlias, tags);
     }
-
 }
 
 export default NotifierCollection;
