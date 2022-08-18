@@ -1,53 +1,107 @@
-# Laravel Settings (Vue 2)
-> Powerful and feature rich settings for Laravel and Vue.
+# Laravel Job Status (Vue 2)
 
-[![Latest Version](https://img.shields.io/github/v/release/ElbowSpaceUK/laravel-settings-vue?label=Latest%20Version&sort=semver&style=plastic)](https://github.com/ElbowSpaceUK/laravel-settings-vue/releases)
+> Show users the progress of their jobs.
+
+[![Latest Version](https://img.shields.io/github/v/release/tobytwigger/laravel-job-status-vue?label=Latest%20Version&sort=semver&style=plastic)](https://github.com/tobytwigger/laravel-job-status-vue/releases)
+[![Build Status](https://github.com/tobytwigger/laravel-job-status-vue/actions/workflows/tests.yaml/badge.svg)](https://github.com/tobytwigger/laravel-job-status-vue/actions/workflows/tests.yaml)
+
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](http://buymeacoffee.com/translate)
 
 ## Contents
 
 * [About the Project](#about)
-* [Documentation](#documentation)
+* [Documentation](#docs)
+* [Examples](#examples)
+* [Installation](#installation)
 * [Contributing](#contributing)
 * [Copyright and Licence](#copyright-and-licence)
 * [Contact](#contact)
 
 ## About
 
-Laravel Settings lets you persist strongly typed settings within your app, with support for
-- Validation, encryption and authorization controls provided.
-- Global settings and user-set settings.
-- Native integration with Vue JS.
+You can find the full repository at [https://github.com/tobytwigger/laravel-job-status](https://github.com/tobytwigger/laravel-job-status).
 
-This is the Vue integration. You will also need to install the [Laravel Settings package](https://github.com/ElbowSpaceUK/laravel-settings).
+![example of job status in use](https://github.com/tobytwigger/laravel-job-status/blob/develop/docs/images/podcast.gif "Showing the user the status of their podcast being uploaded")
 
-## Example
+Laravel Job Status provides a simple way to track your jobs and show the progress to your users.
 
-```php
-\Settings\Setting::setValue('dark_mode', true);
-echo \Settings\Setting::getValue('dark_mode'); // true
-```
+- Show your users the ongoing progress of your job without refreshing the page.
+- Let users cancel running jobs
+- Customisable Vue component for displaying your own jobs
+
+## Docs
+
+We've taken care over documenting everything you'll need to get started and use Laravel Job Status fully.
+
+[Check out the docs](https://tobytwigger.github.io/laravel-job-status) on our documentation site.
+
+[comment]: <> (To build them locally, you'll need to have ruby &#40;we'd recommend using rbenv&#41; and the gem bundler &#40;https://bundler.io/&#41; installed. Run `bundle install && bundle exec jekyll serve` in the docs folder.)
+
+## Examples
+
+### Show users the status of their jobs
+
+The following is enough to show a user the status of the 'process podcast' job for the podcast with the ID `podcastId`.
 
 ```vue
-<template>
-    <div :class="{'dark-mode': $setting.dark_mode}"></div>
-    <button @click="toggleDarkMode">Toggle</button>
+<job-status job="process-podcast" :tags="{podcast: podcastId}">
+<template v-slot:default="{status, lastMessage, complete, cancel, signal}">
+
+    <spinner v-if="complete === false"></spinner>
+    <p>The status of the job is {{status}}</p>
+    <p>{{lastMessage}}</p>
+    <v-button @click="cancel" type="danger">Cancel</v-button>
 </template>
-<script>
-export default {
-    methods: {
-        toggleDarkMode() {
-            this.$setting.dark_mode = !this.$setting.dark_mode;
-        }
-    }
-}
-</script>
+<template v-slot:empty>
+    Upload a podcast to get started
+</template>
+</job-status>
 ```
 
-## Documentation
+### Track a job
 
-We've taken care over documenting everything you'll need to get started and use Laravel settings fully.
+Tracking is simple to enable on any job.
 
-[Check out the docs](https://elbowspaceuk.github.io/laravel-settings/vue) on our documentation site.
+```php
+class ProcessPodcast
+{
+    use Trackable;
+
+    protected Podcast $podcast;
+
+    public function handle()
+    {
+        // Upload and process the podcast
+    }
+
+    public function tags(): array
+    {
+        return [
+            'podcast' => $this->podcast->id,
+            'user' => $this->user->id
+        ];
+    }
+
+    public function alias(): string
+    {
+        return 'process-podcast';
+    }
+
+}
+```
+
+## Installation
+
+All you need to do to use this project is pull it into an existing Laravel app using composer.
+
+```console
+composer require twigger/laravel-job-status
+```
+
+You can publish the configuration file by running
+```console
+php artisan vendor:publish --provider="JobStatus\JobStatusServiceProvider"
+```
 
 ## Contributing
 
@@ -62,4 +116,4 @@ and licensed for use under the terms of the MIT License (MIT). Please see
 
 ## Contact
 
-For any questions, suggestions, security vulnerabilities or help, open an issue or email me directly at [tobytwigger1@gmail.com](mailto:tobytwigger1@gmail.com)
+For any questions, suggestions, security vulnerabilities or help, email me directly at [tobytwigger1@gmail.com](mailto:tobytwigger1@gmail.com)
