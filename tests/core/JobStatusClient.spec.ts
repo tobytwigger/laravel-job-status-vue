@@ -1,6 +1,6 @@
 import axios from 'axios';
-import JobStatusClient from "../../src/core/JobStatusClient";
-import {JobStatus} from "../../src/types/core";
+import JobStatusClient from "~/core/JobStatusClient";
+import {JobStatus} from "~/types/core";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

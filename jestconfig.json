@@ -5,6 +5,9 @@
         "**/*.{js,ts,vue}",
         "!**/node_modules/**"
     ],
+    "moduleNameMapper": {
+        "~/(.*)": "<rootDir>/src/$1"
+    },
     "transform": {
         "^.+\\.tsx?$": "ts-jest"
     },

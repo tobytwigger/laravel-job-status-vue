@@ -1,6 +1,5 @@
-import JobStatus from "../../src/vue2/JobStatus";
-import JobStatusNotifier from "../../dist/core/JobStatusNotifier";
-import JobStatusNotifierPool from "../../dist/core/JobStatusNotifierPool";
+import JobStatusNotifier from "~/core/JobStatusNotifier";
+import JobStatusNotifierPool from "~/core/JobStatusNotifierPool";
 
 it('creates a new instance on calling getInstance', () => {
     const instance = JobStatusNotifierPool.getInstance();

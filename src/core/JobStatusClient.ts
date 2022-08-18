@@ -1,4 +1,4 @@
-import ApiUrlGenerator from './../utils/ApiUrlGenerator';
+import ApiUrlGenerator from '~/utils/ApiUrlGenerator';
 import {AssociativeObject, JobStatus} from '~/types/core';
 import {Axios, AxiosError, AxiosResponse} from 'axios';
 

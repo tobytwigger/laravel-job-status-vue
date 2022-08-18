@@ -1,4 +1,4 @@
-import ApiUrlGenerator from "../../dist/utils/ApiUrlGenerator";
+import ApiUrlGenerator from "~/utils/ApiUrlGenerator";
 
 it('returns the search url', () => {
     let generator = new ApiUrlGenerator('http://localhost/my-base-url');

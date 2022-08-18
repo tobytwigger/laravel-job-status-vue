@@ -1,4 +1,4 @@
-import JobStatusNotifier from "../../dist/core/JobStatusNotifier";
+import JobStatusNotifier from "~/core/JobStatusNotifier";
 
 it('can set and call update callbacks', () => {
     const notifier = new JobStatusNotifier('my-alias', {key1: 'val1'});

@@ -1,10 +1,8 @@
 import {createLocalVue, mount, Wrapper} from '@vue/test-utils';
-import JobStatus from "../../src/vue2/JobStatus";
-import {JobStatus as JobStatusType} from "../../src/types/core";
-import {installer} from '../../src';
+import JobStatus from "~/vue2/JobStatus";
+import {JobStatus as JobStatusType} from "~/types/core";
+import {installer} from '~/index';
 import axios from "axios";
-import {DefaultProps} from "../../src/types/core";
-import JobStatusObserver from "../../dist/core/JobStatusObserver";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

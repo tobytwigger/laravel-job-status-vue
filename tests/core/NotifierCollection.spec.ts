@@ -1,5 +1,5 @@
-import NotifierCollection from "../../dist/core/NotifierCollection";
-import JobStatusNotifier from "../../dist/core/JobStatusNotifier";
+import NotifierCollection from "~/core/NotifierCollection";
+import JobStatusNotifier from "~/core/JobStatusNotifier";
 
 it('saves and retrieves a job status notifier', () => {
     let collection = new NotifierCollection();

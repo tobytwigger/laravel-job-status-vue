@@ -1,8 +1,7 @@
-import Vue from 'vue'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
-import Installer from './../src/index';
+import Installer from '~/index';
 import axios from "axios";
-import JobStatusClient from "../src/core/JobStatusClient";
+import JobStatusClient from "~/core/JobStatusClient";
 
 it('creates a repository instance', () => {
     const localVue = createLocalVue()

@@ -1,5 +1,5 @@
-import JobStatusObserver from "../../dist/core/JobStatusObserver";
-import JobStatusNotifier from "../../dist/core/JobStatusNotifier";
+import JobStatusObserver from "~/core/JobStatusObserver";
+import JobStatusNotifier from "~/core/JobStatusNotifier";
 import axios from "axios";
 
 jest.useFakeTimers();
@@ -57,7 +57,7 @@ it('updates the job status when the update is called', async () => {
     let hasFinished = false;
     observer.poll(500)
         .onUpdated(jobStatus => actions.push('updated'))
-        .onUpdated(jobStatus => actions.push(jobStatus))
+        .onUpdated(jobStatus => actions.push(jobStatus?.job_alias ?? ''))
         .onLoading(() => actions.push('loading'))
         .onFinishedLoading(() => actions.push('finishedLoading'))
         .onFinishedLoading(() => hasFinished = true)
@@ -67,7 +67,7 @@ it('updates the job status when the update is called', async () => {
 
     await observer.update();
 
-    expect(actions).toStrictEqual(['loading', 'updated', jobStatus, 'finishedLoading']);
+    expect(actions).toStrictEqual(['loading', 'updated', 'my_alias', 'finishedLoading']);
     expect(mockedAxios.get).toHaveBeenCalledWith(`/url/job-status?alias=my-alias&tags%5Bkey1%5D=val1`);
 });
 
