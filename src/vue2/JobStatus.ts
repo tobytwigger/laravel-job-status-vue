@@ -1,7 +1,7 @@
 import {defineComponent, h} from 'vue';
-import {AssociativeObject, ComponentData, DefaultProps} from '../types/core';
-import JobStatusObserver from './../core/JobStatusObserver';
-import JobStatusClient from './../core/JobStatusClient';
+import {AssociativeObject, ComponentData, DefaultProps} from '~/types/core';
+import JobStatusObserver from '~/core/JobStatusObserver';
+import JobStatusClient from '~/core/JobStatusClient';
 
 export default defineComponent({
     render() {

@@ -1,8 +1,6 @@
-import JobStatusNotifier from './JobStatusNotifier';
-import {AssociativeObject} from '../types/core';
-import QueryHasher from './../utils/QueryHasher';
-import JobStatusClient from './JobStatusClient';
-import axios, {Axios} from 'axios';
+import JobStatusNotifier from '~/core/JobStatusNotifier';
+import {AssociativeObject} from '~/types/core';
+import QueryHasher from '~/utils/QueryHasher';
 
 interface NotifierObject {
     [key: string]: JobStatusNotifier;

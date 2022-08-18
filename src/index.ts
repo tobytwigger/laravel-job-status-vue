@@ -1,5 +1,5 @@
-import JobStatusClient from './core/JobStatusClient';
-import JobStatus from './vue2/JobStatus';
+import JobStatusClient from '~/core/JobStatusClient';
+import JobStatus from '~/vue2/JobStatus';
 
 type VueOptions = import('./types/vue').VueOptions;
 

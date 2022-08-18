@@ -1,4 +1,4 @@
-import {AssociativeObject} from '../types/core';
+import {AssociativeObject} from '~/types/core';
 
 /** Handles turning a job alias and tags into a unique string */
 class QueryHasher {

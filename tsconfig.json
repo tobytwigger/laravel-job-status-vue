@@ -8,6 +8,9 @@
         "declaration": true,
         "outDir": "./dist",
         "strict": true,
+        "paths": {
+            "~/*": ["./src/*"]
+        },
         "allowSyntheticDefaultImports": true
     },
     "include": ["src"],

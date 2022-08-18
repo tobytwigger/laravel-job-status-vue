@@ -1,5 +1,5 @@
 import ApiUrlGenerator from './../utils/ApiUrlGenerator';
-import {AssociativeObject, JobStatus} from '../types/core';
+import {AssociativeObject, JobStatus} from '~/types/core';
 import {Axios, AxiosError, AxiosResponse} from 'axios';
 
 /** Handles interacting with a job status */
@@ -83,6 +83,12 @@ class JobStatusClient {
         });
     }
 
+    /**
+     * Find a single job status
+     *
+     * @param jobAlias The alias of the job to find
+     * @param tags The tags of the job to find
+     */
     get(jobAlias: string, tags: AssociativeObject): Promise<JobStatus | null> {
         return new Promise<JobStatus | null>((resolve, reject) => {
             this.axios
@@ -99,6 +105,9 @@ class JobStatusClient {
         });
     }
 
+    /**
+     * Clear the currently created instance
+     */
     static clearInstance() {
         JobStatusClient.instance = null;
     }

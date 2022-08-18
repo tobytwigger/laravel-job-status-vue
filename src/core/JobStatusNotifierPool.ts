@@ -1,7 +1,6 @@
-import {AssociativeObject} from '../types/core';
-import JobStatusNotifier from './JobStatusNotifier';
-import {Axios} from 'axios';
-import NotifierCollection from './NotifierCollection';
+import {AssociativeObject} from '~/types/core';
+import JobStatusNotifier from '~/core/JobStatusNotifier';
+import NotifierCollection from '~/core/NotifierCollection';
 
 class JobStatusNotifierPool {
     private static instance: JobStatusNotifierPool;

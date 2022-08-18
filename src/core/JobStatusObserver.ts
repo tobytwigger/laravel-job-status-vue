@@ -1,7 +1,7 @@
-import {AssociativeObject} from '../types/core';
-import JobStatusNotifierPool from './JobStatusNotifierPool';
-import JobStatusNotifier from './JobStatusNotifier';
-import JobStatusClient from './JobStatusClient';
+import {AssociativeObject} from '~/types/core';
+import JobStatusNotifierPool from '~/core/JobStatusNotifierPool';
+import JobStatusNotifier from '~/core/JobStatusNotifier';
+import JobStatusClient from '~/core/JobStatusClient';
 import {Axios} from 'axios';
 
 class JobStatusObserver {
