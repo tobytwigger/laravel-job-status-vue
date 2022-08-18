@@ -1,8 +1,8 @@
-import { AssociativeObject } from '../types/core';
+import {AssociativeObject} from '../types/core';
 import JobStatusNotifierPool from './JobStatusNotifierPool';
 import JobStatusNotifier from './JobStatusNotifier';
 import JobStatusClient from './JobStatusClient';
-import { Axios } from 'axios';
+import {Axios} from 'axios';
 
 class JobStatusObserver {
     interval: NodeJS.Timer | null = null;

@@ -1,4 +1,4 @@
-import { AssociativeObject } from '../types/core';
+import {AssociativeObject} from '../types/core';
 
 class ApiUrlGenerator {
     url: string;

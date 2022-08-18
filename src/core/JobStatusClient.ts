@@ -1,22 +1,47 @@
-import { AssociativeObject, JobStatus } from '../types/core';
-import { Axios, AxiosError, AxiosResponse } from 'axios';
 import ApiUrlGenerator from './../utils/ApiUrlGenerator';
+import {AssociativeObject, JobStatus} from '../types/core';
+import {Axios, AxiosError, AxiosResponse} from 'axios';
 
+/** Handles interacting with a job status */
 class JobStatusClient {
+
+    /**
+     * The singleton instance
+     *
+     * @private
+     */
     private static instance: JobStatusClient | null = null;
 
+    /**
+     * A url generator
+     */
     readonly _url: ApiUrlGenerator;
 
+    /**
+     * Axios, the client
+     */
     readonly axios: Axios;
 
+    /**
+     * Get the url to make the request to as a string
+     */
     get url(): string {
         return this._url.url;
     }
 
+    /**
+     * Create a new instance of the job status client to use as a singleton
+     *
+     * @param url The base url to make requests to
+     * @param axios An axios instance to use to make requests
+     */
     public static createInstance(url: string, axios: Axios) {
         JobStatusClient.instance = new JobStatusClient(url, axios);
     }
 
+    /**
+     * Get the singleton instance if it's been created
+     */
     public static getInstance(): JobStatusClient {
         if (JobStatusClient.instance === null) {
             throw new Error('Please call createInstance before getting an instance of the job status client');
@@ -30,6 +55,14 @@ class JobStatusClient {
         this.axios = axios;
     }
 
+    /**
+     * Send a signal to a job status
+     *
+     * @param jobStatusId The ID of the job status
+     * @param signal The signal name
+     * @param cancelJob Whether to cancel the signal
+     * @param parameters The parameters to pass into the signal
+     */
     sendSignal(
         jobStatusId: number,
         signal: string,

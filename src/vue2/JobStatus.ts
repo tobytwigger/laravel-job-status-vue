@@ -1,5 +1,5 @@
-import { defineComponent, h } from 'vue';
-import { AssociativeObject, ComponentData, DefaultProps } from '../types/core';
+import {defineComponent, h} from 'vue';
+import {AssociativeObject, ComponentData, DefaultProps} from '../types/core';
 import JobStatusObserver from './../core/JobStatusObserver';
 import JobStatusClient from './../core/JobStatusClient';
 
@@ -8,21 +8,21 @@ export default defineComponent({
         if (this.$scopedSlots.hasOwnProperty('loading') && this.loading && this.status === null) {
             if (this.$scopedSlots.hasOwnProperty('loading')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.loading({ initialLoad: this.initialLoad }));
+                return h('div', this.$scopedSlots.loading({initialLoad: this.initialLoad}));
             }
             return h('div', 'Loading');
         }
         if (this.error) {
             if (this.$scopedSlots.hasOwnProperty('error')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.error({ message: this.error }));
+                return h('div', this.$scopedSlots.error({message: this.error}));
             }
             return h('div', 'An error occured');
         }
         if (this.status === null) {
             if (this.$scopedSlots.hasOwnProperty('empty')) {
                 // @ts-ignore
-                return h('div', this.$scopedSlots.empty({ loading: this.loading, initialLoad: this.initialLoad }));
+                return h('div', this.$scopedSlots.empty({loading: this.loading, initialLoad: this.initialLoad}));
             }
             return h('div', 'No job found');
         }

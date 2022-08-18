@@ -1,4 +1,4 @@
-import { AssociativeObject } from '../types/core';
+import {AssociativeObject} from '../types/core';
 
 /** Handles turning a job alias and tags into a unique string */
 class QueryHasher {
@@ -11,7 +11,7 @@ class QueryHasher {
      * @param {AssociativeObject} tags The tags identifying the job.
      */
     static encode(jobAlias: string, tags: AssociativeObject): string {
-        return encodeURIComponent(JSON.stringify({ jobAlias, tags }));
+        return encodeURIComponent(JSON.stringify({jobAlias, tags}));
     }
 
     /**

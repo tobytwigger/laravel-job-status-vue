@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import {AxiosResponse} from 'axios';
 import JobStatusObserver from '../core/JobStatusObserver';
 
 interface ComponentData {

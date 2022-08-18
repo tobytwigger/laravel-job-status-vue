@@ -1,4 +1,4 @@
-import { Axios } from 'axios';
+import {Axios} from 'axios';
 import Vue from 'vue';
 
 declare module '*.vue' {
@@ -11,4 +11,4 @@ interface VueOptions {
     axios: Axios;
 }
 
-export { VueOptions };
+export {VueOptions};

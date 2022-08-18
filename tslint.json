@@ -1,3 +1,16 @@
 {
-    "extends": ["tslint:recommended", "tslint-config-prettier"]
+    "extends": ["tslint:recommended", "tslint-config-prettier"],
+    "defaultSeverity": "warning",
+    "rules": {
+        "no-implicit-dependencies": true,
+        "no-unused-variable": true,
+        "completed-docs": true,
+        "ordered-imports": true,
+        "no-any": true,
+        "no-for-in-array": true,
+        "no-import-side-effect": true,
+        "await-promise": true,
+        "curly": true,
+        "no-console": true
+    }
 }

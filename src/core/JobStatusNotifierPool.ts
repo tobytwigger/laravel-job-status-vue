@@ -1,6 +1,6 @@
-import { AssociativeObject } from '../types/core';
+import {AssociativeObject} from '../types/core';
 import JobStatusNotifier from './JobStatusNotifier';
-import { Axios } from 'axios';
+import {Axios} from 'axios';
 import NotifierCollection from './NotifierCollection';
 
 class JobStatusNotifierPool {

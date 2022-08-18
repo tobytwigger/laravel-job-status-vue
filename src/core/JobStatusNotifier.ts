@@ -1,4 +1,4 @@
-import { AssociativeObject, JobStatus } from '../types/core';
+import {AssociativeObject, JobStatus} from '../types/core';
 
 class JobStatusNotifier {
     jobAlias: string;
