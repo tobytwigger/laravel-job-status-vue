@@ -6,25 +6,16 @@ import JobStatusClient from '~/core/JobStatusClient';
 export default defineComponent({
     render() {
         if (this.$scopedSlots.hasOwnProperty('loading') && this.loading && this.status === null) {
-            if (this.$scopedSlots.hasOwnProperty('loading')) {
-                // @ts-ignore
-                return h('div', this.$scopedSlots.loading({initialLoad: this.initialLoad}));
-            }
-            return h('div', 'Loading');
+            // @ts-ignore
+            return h('div', this.$scopedSlots.loading({initialLoad: this.initialLoad}));
         }
-        if (this.error) {
-            if (this.$scopedSlots.hasOwnProperty('error')) {
-                // @ts-ignore
-                return h('div', this.$scopedSlots.error({message: this.error}));
-            }
-            return h('div', 'An error occured');
+        if (this.error && this.$scopedSlots.hasOwnProperty('error')) {
+            // @ts-ignore
+            return h('div', this.$scopedSlots.error({message: this.error}));
         }
-        if (this.status === null) {
-            if (this.$scopedSlots.hasOwnProperty('empty')) {
-                // @ts-ignore
-                return h('div', this.$scopedSlots.empty({loading: this.loading, initialLoad: this.initialLoad}));
-            }
-            return h('div', 'No job found');
+        if (this.status === null && this.$scopedSlots.hasOwnProperty('empty')) {
+            // @ts-ignore
+            return h('div', this.$scopedSlots.empty({loading: this.loading, initialLoad: this.initialLoad}));
         }
         if (this.$scopedSlots.hasOwnProperty('default')) {
             // @ts-ignore
@@ -54,7 +45,7 @@ export default defineComponent({
             type: Number,
             required: false,
             default: 5000,
-        },
+        }
     },
     mounted() {
         this.setUpObserver();

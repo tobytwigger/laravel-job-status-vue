@@ -125,6 +125,7 @@ it('shows the error slot if an error occured', async() => {
     await wrapper.vm.$nextTick()
     expect(wrapper.find('div>div').html()).toBe('<div>Error: This was the problem</div>');
 });
+
 it('shows the default slot when a job status is loading but a job status is already retrieved in the component', async() => {
     const oldJobStatus: JobStatusType = {
         created_at: "",
@@ -190,7 +191,7 @@ it('sends a cancel signal from the default slot with the cancel function', async
             tags: {key1: 'val1'}
         },
         scopedSlots: {
-            default: '<div><button @click="props.cancel">Cancel</button></div>'
+            default: '<div><button @click="() => props.cancel()">Cancel</button></div>'
         }
     });
     await wrapper.vm.$nextTick();
@@ -444,7 +445,7 @@ it('Passes initial load to the component loading slot if it is loading for the f
 });
 
 
-it('Shows a default slot for error', async() => {
+it('Shows the default slot for error if error not given', async() => {
     mockedAxios.get.mockImplementation(() => {
         throw new Error('This was the problem');
     });
@@ -454,12 +455,15 @@ it('Shows a default slot for error', async() => {
             method: 'polling',
             jobAlias: 'my_alias',
             tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            default: '<div>The default slot</div>',
         }
     });
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('div').html()).toBe('<div>An error occured</div>');
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>The default slot</div>\n</div>');
 });
 
 it('Shows a default slot for empty', async() => {
@@ -483,7 +487,10 @@ it('Shows a default slot for empty', async() => {
             method: 'polling',
             jobAlias: 'my_alias',
             tags: {key1: 'val1'}
+        },
+        scopedSlots: {
+            default: '<div>The default slot</div>',
         }
     });
-    expect(wrapper.find('div').html()).toBe('<div>No job found</div>');
+    expect(wrapper.find('div').html()).toBe('<div>\n  <div>The default slot</div>\n</div>');
 });
