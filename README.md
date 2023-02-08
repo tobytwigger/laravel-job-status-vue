@@ -1,3 +1,5 @@
+> Please see the new repository at https://github.com/tobytwigger/laravel-job-status
+ 
 # Laravel Job Status (Vue 2)
 
 > Show users the progress of their jobs.
